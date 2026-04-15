@@ -16,12 +16,16 @@
     "createdAt": "2026-04-15T13:51:21.487Z",
     "variables": [
       {
-        "name": "Durée de combustion",
-        "value": "40h"
-      },
-      {
         "name": "Poids",
         "value": "180g"
+      },
+      {
+        "name": "test",
+        "value": "fzmlf"
+      },
+      {
+        "name": "test2",
+        "value": "lkqscq"
       }
     ]
   },
