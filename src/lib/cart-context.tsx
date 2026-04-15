@@ -26,8 +26,8 @@ const CartContext = createContext<CartContextType>({
   total: 0,
 });
 
-export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>([]);
+export function CartProvider({ children, initialState = [] }: { children: ReactNode, initialState?: CartItem[] }) {
+  const [items, setItems] = useState<CartItem[]>(initialState);
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
@@ -41,6 +41,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!hydrated) return;
     localStorage.setItem('lumiere-cart', JSON.stringify(items));
+    document.cookie = `lumiere-cart=${encodeURIComponent(JSON.stringify(items))}; path=/; max-age=31536000`;
   }, [items, hydrated]);
 
   const addItem = (product: Omit<CartItem, 'qty'>, qty: number) => {

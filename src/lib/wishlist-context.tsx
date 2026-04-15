@@ -26,8 +26,8 @@ const WishlistContext = createContext<WishlistContextType>({
   count: 0,
 });
 
-export function WishlistProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<WishlistItem[]>([]);
+export function WishlistProvider({ children, initialState = [] }: { children: ReactNode, initialState?: WishlistItem[] }) {
+  const [items, setItems] = useState<WishlistItem[]>(initialState);
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
@@ -41,6 +41,7 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!hydrated) return;
     localStorage.setItem('lumiere-wishlist', JSON.stringify(items));
+    document.cookie = `lumiere-wishlist=${encodeURIComponent(JSON.stringify(items))}; path=/; max-age=31536000`;
   }, [items, hydrated]);
 
   const addItem = (product: WishlistItem) => {
