@@ -1,6 +1,7 @@
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { CartProvider } from '@/lib/cart-context';
+import { WishlistProvider } from '@/lib/wishlist-context';
 
 export default function SiteLayout({
   children,
@@ -9,13 +10,15 @@ export default function SiteLayout({
 }) {
   return (
     <CartProvider>
-      <div className="min-h-screen flex flex-col bg-neutral-50">
-        <Navbar />
-        <main className="flex-grow">
+      <WishlistProvider>
+        <div className="min-h-screen flex flex-col bg-neutral-50">
+          <Navbar />
+          <main className="flex-grow">
           {children}
-        </main>
-        <Footer />
-      </div>
+          </main>
+          <Footer />
+        </div>
+      </WishlistProvider>
     </CartProvider>
   );
 }

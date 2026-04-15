@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { getAllProducts } from '@/lib/products-store';
 import { productUrl } from '@/lib/slug';
+import WishlistButton from '@/components/WishlistButton';
 
 export const dynamic = 'force-dynamic';
 
@@ -60,6 +61,7 @@ export default async function Boutique() {
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-4xl">🕯️</div>
                 )}
+                <WishlistButton product={product} />
                 {product.featured && (
                   <div className="absolute top-3 left-3 text-[10px] uppercase tracking-widest bg-neutral-900 text-white px-2.5 py-1">
                     Bestseller

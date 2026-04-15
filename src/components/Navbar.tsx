@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Menu } from 'lucide-react';
 import CartIcon from './CartIcon';
+import WishlistIcon from './WishlistIcon';
 
 export default function Navbar() {
   return (
@@ -18,6 +19,7 @@ export default function Navbar() {
             <Link href="/notre-histoire" className="text-neutral-600 hover:text-neutral-900 transition-colors uppercase text-sm tracking-widest">Notre Histoire</Link>
           </div>
           <div className="flex items-center space-x-4">
+            <WishlistIcon />
             <CartIcon />
             <button className="md:hidden text-neutral-600">
               <Menu size={24} strokeWidth={1.5} />

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useCart } from '@/lib/cart-context';
+import { useWishlist } from '@/lib/wishlist-context';
 
 interface Props {
   product: {
@@ -16,6 +17,7 @@ interface Props {
 
 export default function AddToCart({ product }: Props) {
   const { addItem } = useCart();
+  const { addItem: addWishlist, removeItem: removeWishlist, isInWishlist } = useWishlist();
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
 
@@ -57,6 +59,27 @@ export default function AddToCart({ product }: Props) {
           }`}
         >
           {added ? '✓ Ajouté !' : product.stock === 0 ? 'Indisponible' : 'Ajouter au panier'}
+        </button>
+
+        {/* Wishlist Button */}
+        <button
+          onClick={() => isInWishlist(product._id) ? removeWishlist(product._id) : addWishlist({
+            _id: product._id,
+            name: product.name,
+            price: product.price,
+            image: product.image,
+            category: (product as any).category || 'Bougie' 
+          })}
+          className={`w-14 h-14 flex items-center justify-center border transition-colors ${
+            isInWishlist(product._id) 
+              ? 'border-red-500 bg-red-50 text-red-500' 
+              : 'border-neutral-300 text-neutral-400 hover:text-red-500 hover:border-red-500'
+          }`}
+          title={isInWishlist(product._id) ? 'Retirer de la wishlist' : 'Ajouter à la wishlist'}
+        >
+          <svg className="w-5 h-5" fill={isInWishlist(product._id) ? "currentColor" : "none"} viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+          </svg>
         </button>
       </div>
 
