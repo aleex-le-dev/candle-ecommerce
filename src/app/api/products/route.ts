@@ -15,7 +15,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, category, price, description, details, burnTime, weight, image, gallery, stock, featured } = body;
+    const { name, category, price, description, details, variables, image, gallery, stock, featured } = body;
 
     if (!name || !price) {
       return NextResponse.json({ error: 'Nom et prix sont requis' }, { status: 400 });
@@ -27,8 +27,7 @@ export async function POST(req: NextRequest) {
       price: Number(price),
       description: description || '',
       details: details || '',
-      burnTime: burnTime || '',
-      weight: weight || '',
+      variables: variables || [],
       image: image || '',
       gallery: gallery || [],
       stock: Number(stock) || 0,

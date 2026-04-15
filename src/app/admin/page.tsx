@@ -10,8 +10,7 @@ interface Product {
   price: number;
   description: string;
   details: string;
-  burnTime: string;
-  weight: string;
+  variables: { name: string; value: string }[];
   image: string;
   gallery: string[];
   stock: number;
@@ -25,8 +24,7 @@ const EMPTY_FORM = {
   price: '',
   description: '',
   details: '',
-  burnTime: '',
-  weight: '',
+  variables: [] as { name: string; value: string }[],
   image: '',
   gallery: ['', '', ''],
   stock: '',
@@ -81,8 +79,7 @@ export default function AdminPage() {
       price: String(p.price),
       description: p.description,
       details: p.details,
-      burnTime: p.burnTime,
-      weight: p.weight,
+      variables: p.variables || [],
       image: p.image,
       gallery: [...p.gallery, '', '', ''].slice(0, 3),
       stock: String(p.stock),
@@ -253,33 +250,6 @@ export default function AdminPage() {
               </svg>
               Codes promo
             </a>
-
-            {/* Pages du site */}
-            <p className="text-[10px] uppercase tracking-widest text-white/20 px-4 pb-2 pt-4">Pages du site</p>
-            {[
-              { href: '/', label: 'Accueil', icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' },
-              { href: '/boutique', label: 'Boutique', icon: 'M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z' },
-              { href: '/panier', label: 'Panier', icon: 'M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z' },
-              { href: '/cgv', label: 'CGV', icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z' },
-              { href: '/mentions-legales', label: 'Mentions légales', icon: 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z' },
-              { href: '/politique-de-confidentialite', label: 'Confidentialité', icon: 'M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z' },
-            ].map(({ href, label, icon }) => (
-              <a
-                key={href}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm text-white/30 hover:text-white hover:bg-white/5 transition-all group"
-              >
-                <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={icon} />
-                </svg>
-                <span className="truncate flex-1">{label}</span>
-                <svg className="w-3 h-3 opacity-0 group-hover:opacity-40 flex-shrink-0 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-              </a>
-            ))}
           </div>
         </aside>
 
@@ -516,26 +486,68 @@ export default function AdminPage() {
                       />
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-xs font-medium text-white/40 uppercase tracking-wider mb-2">Durée de combustion</label>
-                        <input
-                          type="text"
-                          value={form.burnTime}
-                          onChange={e => setForm(f => ({ ...f, burnTime: e.target.value }))}
-                          placeholder="Ex : 45h"
-                          className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-white/30 transition-colors text-sm"
-                        />
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <label className="block text-xs font-medium text-white/40 uppercase tracking-wider">Variables / Caractéristiques</label>
+                        <button
+                          type="button"
+                          onClick={() => setForm(f => ({ ...f, variables: [...f.variables, { name: '', value: '' }] }))}
+                          className="text-xs text-white/60 hover:text-white flex items-center gap-1"
+                        >
+                          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+                          Ajouter
+                        </button>
                       </div>
-                      <div>
-                        <label className="block text-xs font-medium text-white/40 uppercase tracking-wider mb-2">Poids net</label>
-                        <input
-                          type="text"
-                          value={form.weight}
-                          onChange={e => setForm(f => ({ ...f, weight: e.target.value }))}
-                          placeholder="Ex : 180g"
-                          className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-white/30 transition-colors text-sm"
-                        />
+                      <div className="space-y-3">
+                        {form.variables.map((v, i) => (
+                          <div key={i} className="flex gap-3 items-start">
+                            <input
+                              type="text"
+                              value={v.name}
+                              onChange={e => {
+                                const newVars = [...form.variables];
+                                newVars[i].name = e.target.value;
+                                setForm(f => ({ ...f, variables: newVars }));
+                              }}
+                              placeholder="Nom (ex: Poids)"
+                              className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-white/30 transition-colors text-sm"
+                            />
+                            <input
+                              type="text"
+                              value={v.value}
+                              onChange={e => {
+                                const newVars = [...form.variables];
+                                newVars[i].value = e.target.value;
+                                setForm(f => ({ ...f, variables: newVars }));
+                              }}
+                              placeholder="Valeur (ex: 180g)"
+                              className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-white/30 transition-colors text-sm"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const newVars = [...form.variables];
+                                newVars.splice(i, 1);
+                                setForm(f => ({ ...f, variables: newVars }));
+                              }}
+                              className="p-3 mt-0.5 rounded-xl text-red-400/50 hover:text-red-400 hover:bg-red-400/10 transition-colors"
+                            >
+                              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                            </button>
+                          </div>
+                        ))}
+                        {form.variables.length === 0 && (
+                          <div className="text-center py-6 border border-dashed border-white/10 rounded-xl">
+                            <p className="text-white/30 text-sm mb-2">Aucune variable définie</p>
+                            <button
+                              type="button"
+                              onClick={() => setForm(f => ({ ...f, variables: [{ name: '', value: '' }] }))}
+                              className="text-xs px-4 py-2 rounded-lg bg-white/5 text-white hover:bg-white/10 transition-colors"
+                            >
+                              Ajouter une variable
+                            </button>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </>

@@ -70,12 +70,15 @@ export default async function ProduitPage({
             {/* Specs */}
             <div className="grid grid-cols-2 gap-3 mb-8">
               {[
-                { icon: '🕯️', label: 'Combustion', value: product.burnTime || '—' },
-                { icon: '⚖️', label: 'Poids net', value: product.weight || '—' },
+                ...(product.variables || []).map(v => ({
+                  icon: v.name.toLowerCase().includes('poids') ? '⚖️' : v.name.toLowerCase().includes('combustion') ? '🕯️' : '✨',
+                  label: v.name,
+                  value: v.value
+                })),
                 { icon: '🌿', label: 'Matières', value: 'Naturelles' },
                 { icon: '🤲', label: 'Fabrication', value: 'Artisanale' },
-              ].map(spec => (
-                <div key={spec.label} className="bg-neutral-50 rounded-sm p-4 flex items-center gap-3">
+              ].map((spec, i) => (
+                <div key={`${spec.label}-${i}`} className="bg-neutral-50 rounded-sm p-4 flex items-center gap-3">
                   <span className="text-xl">{spec.icon}</span>
                   <div>
                     <p className="text-[10px] uppercase tracking-wider text-neutral-400">{spec.label}</p>
