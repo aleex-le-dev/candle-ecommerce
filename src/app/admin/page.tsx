@@ -242,6 +242,18 @@ export default function AdminPage() {
               </>
             )}
 
+            {/* Marketing */}
+            <p className="text-[10px] uppercase tracking-widest text-white/20 px-4 pb-2 pt-4">Marketing</p>
+            <a
+              href="/admin/promos"
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-white/40 hover:text-white hover:bg-white/5 transition-all"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+              </svg>
+              Codes promo
+            </a>
+
             {/* Pages du site */}
             <p className="text-[10px] uppercase tracking-widest text-white/20 px-4 pb-2 pt-4">Pages du site</p>
             {[

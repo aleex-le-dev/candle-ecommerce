@@ -1,11 +1,11 @@
 [
   {
     "_id": "1",
-    "name": "Fleur de Lavande",
+    "name": "Fleur de test",
     "category": "Florale",
-    "price": 24,
-    "description": "Une bougie apaisante aux huiles essentielles de lavande, idéale pour se détendre après une longue journée.",
-    "details": "100% cire de soja naturelle, mèche en coton sans plomb. Coulée à la main en Provence.",
+    "price": 254,
+    "description": "test description",
+    "details": "test compo",
     "burnTime": "40h",
     "weight": "180g",
     "image": "https://images.unsplash.com/photo-1603006905003-be475563bc59?q=80&w=1200",
@@ -13,7 +13,7 @@
       "https://images.unsplash.com/photo-1616858004746-860e68e43827?q=80&w=1200",
       "https://images.unsplash.com/photo-1609145695078-d4501a3512b9?q=80&w=1200"
     ],
-    "stock": 15,
+    "stock": 1,
     "featured": true,
     "createdAt": "2026-04-15T13:51:21.487Z"
   },
@@ -29,7 +29,8 @@
     "image": "https://images.unsplash.com/photo-1605814510527-2cdd652d9198?q=80&w=1200",
     "gallery": [
       "https://images.unsplash.com/photo-1608248593339-b90306132717?q=80&w=1200",
-      "https://images.unsplash.com/photo-1602874801007-bd458bb1b8b6?q=80&w=1200"
+      "https://images.unsplash.com/photo-1602874801007-bd458bb1b8b6?q=80&w=1200",
+      "https://images.unsplash.com/photo-1603006905393-cfbf06fa6bdf?q=80&w=1200"
     ],
     "stock": 8,
     "featured": true,
@@ -47,7 +48,8 @@
     "image": "https://images.unsplash.com/photo-1596433809252-260c27459eb0?q=80&w=1200",
     "gallery": [
       "https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?q=80&w=1200",
-      "https://images.unsplash.com/photo-1620600120150-1d8f1e28cdd2?q=80&w=1200"
+      "https://images.unsplash.com/photo-1620600120150-1d8f1e28cdd2?q=80&w=1200",
+      "https://images.unsplash.com/photo-1572454652253-ab021efcd672?q=80&w=1200"
     ],
     "stock": 20,
     "featured": true,
@@ -64,8 +66,9 @@
     "weight": "200g",
     "image": "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?q=80&w=1200",
     "gallery": [
-      "https://images.unsplash.com/photo-1603006905393-cfbf06fa6bdf?q=80&w=1200",
-      "https://images.unsplash.com/photo-1610427357416-d86b72a6b251?q=80&w=1200"
+      "https://images.unsplash.com/photo-1610427357416-d86b72a6b251?q=80&w=1200",
+      "https://images.unsplash.com/photo-1555526015-89f5c225018f?q=80&w=1200",
+      "https://images.unsplash.com/photo-1579213838826-eb5bc2052b66?q=80&w=1200"
     ],
     "stock": 12,
     "featured": false,
@@ -77,13 +80,14 @@
     "category": "Florale",
     "price": 27,
     "description": "Une invitation au voyage au cœur d'un verger en fleurs avec ce parfum subtil et légèrement sucré.",
-    "details": "Cire végétale sans OGM, sans phtalates. Mèche 100% coton.",
+    "details": "Cire végétale sans OGM, sans phtalates. Mèche 100% coton. Combustion d'environ 45h.",
     "burnTime": "45h",
     "weight": "180g",
     "image": "https://images.unsplash.com/photo-1582239459521-8ff819c9e54a?q=80&w=1200",
     "gallery": [
-      "https://images.unsplash.com/photo-1555526015-89f5c225018f?q=80&w=1200",
-      "https://images.unsplash.com/photo-1602484501258-39c4a8ee9278?q=80&w=1200"
+      "https://images.unsplash.com/photo-1602484501258-39c4a8ee9278?q=80&w=1200",
+      "https://images.unsplash.com/photo-1609145695078-d4501a3512b9?q=80&w=1200",
+      "https://images.unsplash.com/photo-1616858004746-860e68e43827?q=80&w=1200"
     ],
     "stock": 6,
     "featured": false,
@@ -101,7 +105,8 @@
     "image": "https://images.unsplash.com/photo-1602874801007-bd458bb1b8b6?q=80&w=1200",
     "gallery": [
       "https://images.unsplash.com/photo-1572454652253-ab021efcd672?q=80&w=1200",
-      "https://images.unsplash.com/photo-1579213838826-eb5bc2052b66?q=80&w=1200"
+      "https://images.unsplash.com/photo-1605814510527-2cdd652d9198?q=80&w=1200",
+      "https://images.unsplash.com/photo-1603006905393-cfbf06fa6bdf?q=80&w=1200"
     ],
     "stock": 10,
     "featured": false,

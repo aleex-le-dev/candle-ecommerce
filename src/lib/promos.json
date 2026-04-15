@@ -1,0 +1,11 @@
+[
+  {
+    "code": "TEST",
+    "type": "fixed",
+    "value": 20,
+    "minOrder": 0,
+    "active": true,
+    "_id": "1776265336904",
+    "createdAt": "2026-04-15T15:02:16.905Z"
+  }
+]
