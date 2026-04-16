@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(_req: NextRequest, ctx: RouteContext<'/api/valeurs/[id]'>) {
   const { id } = await ctx.params;
-  const valeur = getValeurById(id);
+  const valeur = await getValeurById(id);
   if (!valeur) return NextResponse.json({ error: 'Valeur introuvable' }, { status: 404 });
   return NextResponse.json(valeur);
 }
@@ -14,7 +14,7 @@ export async function PUT(req: NextRequest, ctx: RouteContext<'/api/valeurs/[id]
   try {
     const { id } = await ctx.params;
     const body = await req.json();
-    const updated = updateValeur(id, body);
+    const updated = await updateValeur(id, body);
     if (!updated) return NextResponse.json({ error: 'Valeur introuvable' }, { status: 404 });
     return NextResponse.json(updated);
   } catch {
@@ -24,7 +24,7 @@ export async function PUT(req: NextRequest, ctx: RouteContext<'/api/valeurs/[id]
 
 export async function DELETE(_req: NextRequest, ctx: RouteContext<'/api/valeurs/[id]'>) {
   const { id } = await ctx.params;
-  const success = deleteValeur(id);
+  const success = await deleteValeur(id);
   if (!success) return NextResponse.json({ error: 'Valeur introuvable' }, { status: 404 });
   return NextResponse.json({ success: true });
 }

@@ -5,8 +5,8 @@ import WishlistButton from '@/components/WishlistButton';
 
 export const dynamic = 'force-dynamic';
 
-export default function Home() {
-  const allProducts = getAllProducts();
+export default async function Home() {
+  const allProducts = await getAllProducts();
   const featured = allProducts.filter(p => p.featured);
   const displayProducts = featured.length > 0 ? featured : allProducts.slice(0, 3);
 

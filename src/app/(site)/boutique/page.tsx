@@ -10,7 +10,7 @@ export const metadata = {
 };
 
 export default async function Boutique() {
-  const products = getAllProducts();
+  const products = await getAllProducts();
 
   const categories = ['Tous', ...Array.from(new Set(products.map(p => p.category)))];
 

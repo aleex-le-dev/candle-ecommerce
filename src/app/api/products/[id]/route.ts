@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(_req: NextRequest, ctx: RouteContext<'/api/products/[id]'>) {
   const { id } = await ctx.params;
-  const product = getProductById(id);
+  const product = await getProductById(id);
   if (!product) return NextResponse.json({ error: 'Produit introuvable' }, { status: 404 });
   return NextResponse.json(product);
 }
@@ -14,7 +14,7 @@ export async function PUT(req: NextRequest, ctx: RouteContext<'/api/products/[id
   try {
     const { id } = await ctx.params;
     const body = await req.json();
-    const updated = updateProduct(id, body);
+    const updated = await updateProduct(id, body);
     if (!updated) return NextResponse.json({ error: 'Produit introuvable' }, { status: 404 });
     return NextResponse.json(updated);
   } catch {
@@ -24,7 +24,7 @@ export async function PUT(req: NextRequest, ctx: RouteContext<'/api/products/[id
 
 export async function DELETE(_req: NextRequest, ctx: RouteContext<'/api/products/[id]'>) {
   const { id } = await ctx.params;
-  const success = deleteProduct(id);
+  const success = await deleteProduct(id);
   if (!success) return NextResponse.json({ error: 'Produit introuvable' }, { status: 404 });
   return NextResponse.json({ success: true });
 }

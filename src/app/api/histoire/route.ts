@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
-    return NextResponse.json(getAllArticles());
+    return NextResponse.json(await getAllArticles());
   } catch {
     return NextResponse.json({ error: 'Erreur lors de la récupération des articles' }, { status: 500 });
   }
@@ -18,13 +18,11 @@ export async function POST(req: NextRequest) {
     if (!theme || !title || !text) {
       return NextResponse.json({ error: 'Thème, titre et texte sont requis' }, { status: 400 });
     }
-    const article = createArticle({
-      theme,
-      title,
-      body: text,
+    const article = await createArticle({
+      theme, title, body: text,
       image: image || '',
       imageAlt: imageAlt || '',
-      order: Number(order) ?? 0,
+      order: Number(order) || 0,
     });
     return NextResponse.json(article, { status: 201 });
   } catch {

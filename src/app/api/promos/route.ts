@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
-    return NextResponse.json(getAllPromos());
+    return NextResponse.json(await getAllPromos());
   } catch {
     return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 });
   }
@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     if (!code || !type || value == null) {
       return NextResponse.json({ error: 'code, type et value sont requis' }, { status: 400 });
     }
-    const promo = createPromo({
+    const promo = await createPromo({
       code: code.toUpperCase().trim(),
       type,
       value: Number(value),

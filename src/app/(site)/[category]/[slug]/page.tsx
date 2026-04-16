@@ -11,11 +11,11 @@ export default async function ProduitPage({
   params: Promise<{ category: string; slug: string }>;
 }) {
   const { category, slug } = await params;
-  const product = getProductBySlug(category, slug);
+  const product = await getProductBySlug(category, slug);
 
   if (!product) notFound();
 
-  const allProducts = getAllProducts();
+  const allProducts = await getAllProducts();
   const related = allProducts.filter(p => p._id !== product._id).slice(0, 3);
 
   return (

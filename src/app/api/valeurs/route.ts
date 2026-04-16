@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
-    return NextResponse.json(getAllValeurs());
+    return NextResponse.json(await getAllValeurs());
   } catch {
     return NextResponse.json({ error: 'Erreur lors de la récupération des valeurs' }, { status: 500 });
   }
@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
     if (!title || !desc) {
       return NextResponse.json({ error: 'Titre et description sont requis' }, { status: 400 });
     }
-    const valeur = createValeur({ icon: icon || '', title, desc, order: Number(order) || 0 });
+    const valeur = await createValeur({ icon: icon || '', title, desc, order: Number(order) || 0 });
     return NextResponse.json(valeur, { status: 201 });
   } catch {
     return NextResponse.json({ error: 'Erreur lors de la création' }, { status: 500 });

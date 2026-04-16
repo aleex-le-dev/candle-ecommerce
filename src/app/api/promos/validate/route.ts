@@ -12,6 +12,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ valid: false, error: 'Code manquant', discount: 0 }, { status: 400 });
   }
 
-  const result = validatePromo(code, total);
+  const result = await validatePromo(code, total);
   return NextResponse.json(result);
 }

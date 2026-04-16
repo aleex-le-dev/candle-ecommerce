@@ -9,8 +9,8 @@ export const metadata = {
 };
 
 export default async function NotreHistoire() {
-  const articles = getAllArticles();
-  const valeurs = getAllValeurs();
+  const articles = await getAllArticles();
+  const valeurs = await getAllValeurs();
 
   return (
     <div className="pt-24 pb-20">

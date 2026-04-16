@@ -8,7 +8,7 @@ export async function PUT(req: NextRequest, ctx: RouteContext<'/api/promos/[id]'
     const { id } = await ctx.params;
     const body = await req.json();
     if (body.code) body.code = body.code.toUpperCase().trim();
-    const updated = updatePromo(id, body);
+    const updated = await updatePromo(id, body);
     if (!updated) return NextResponse.json({ error: 'Code introuvable' }, { status: 404 });
     return NextResponse.json(updated);
   } catch {
@@ -18,7 +18,7 @@ export async function PUT(req: NextRequest, ctx: RouteContext<'/api/promos/[id]'
 
 export async function DELETE(_req: NextRequest, ctx: RouteContext<'/api/promos/[id]'>) {
   const { id } = await ctx.params;
-  const ok = deletePromo(id);
+  const ok = await deletePromo(id);
   if (!ok) return NextResponse.json({ error: 'Code introuvable' }, { status: 404 });
   return NextResponse.json({ success: true });
 }

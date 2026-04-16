@@ -23,7 +23,12 @@ async function dbConnect() {
     };
 
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+      console.log('✅ MongoDB connecté');
       return mongoose;
+    }).catch((err) => {
+      cached.promise = null;
+      console.error('❌ Erreur MongoDB:', err.message);
+      throw err;
     });
   }
   cached.conn = await cached.promise;
