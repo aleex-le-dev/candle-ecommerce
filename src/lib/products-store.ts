@@ -24,10 +24,10 @@ function serialize(doc: any): Product {
     price: doc.price,
     description: doc.description ?? '',
     details: doc.details ?? '',
-    variables: doc.variables ?? [],
+    variables: (doc.variables ?? []).map(({ name, value }: any) => ({ name, value })),
     image: doc.image ?? '',
     gallery: doc.gallery ?? [],
-    stock: doc.stock ?? 0,
+    stock: Number(doc.stock ?? 0),
     featured: doc.featured ?? false,
     createdAt: doc.createdAt?.toISOString?.() ?? doc.createdAt ?? '',
   };

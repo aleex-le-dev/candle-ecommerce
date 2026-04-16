@@ -1,5 +1,15 @@
 import dbConnect from './mongodb';
 import OrderModel from './models/Order';
+import CounterModel from './models/Counter';
+
+async function nextOrderNumber(): Promise<number> {
+  const counter = await CounterModel.findOneAndUpdate(
+    { _id: 'orderNumber' },
+    { $inc: { seq: 1 } },
+    { upsert: true, new: true }
+  );
+  return counter.seq;
+}
 
 export interface OrderItem {
   _id: string;
@@ -22,6 +32,8 @@ export interface OrderCustomer {
 
 export interface Order {
   _id: string;
+  orderNumber: number;
+  userId?: string;
   customer: OrderCustomer;
   items: OrderItem[];
   subtotal: number;
@@ -33,11 +45,31 @@ export interface Order {
   createdAt: string;
 }
 
+export function formatOrderNumber(n: number): string {
+  return String(n).padStart(7, '0');
+}
+
 function serialize(doc: any): Order {
   return {
     _id: doc._id.toString(),
-    customer: doc.customer,
-    items: doc.items,
+    orderNumber: doc.orderNumber ?? 0,
+    customer: {
+      prenom: doc.customer?.prenom ?? '',
+      nom: doc.customer?.nom ?? '',
+      email: doc.customer?.email ?? '',
+      telephone: doc.customer?.telephone ?? '',
+      adresse: doc.customer?.adresse ?? '',
+      cp: doc.customer?.cp ?? '',
+      ville: doc.customer?.ville ?? '',
+      pays: doc.customer?.pays ?? '',
+    },
+    items: (doc.items ?? []).map((i: any) => ({
+      _id: String(i._id),
+      name: i.name,
+      price: i.price,
+      qty: i.qty,
+      image: i.image ?? '',
+    })),
     subtotal: doc.subtotal,
     discount: doc.discount ?? 0,
     shipping: doc.shipping,
@@ -60,9 +92,10 @@ export async function getOrderById(id: string): Promise<Order | null> {
   return doc ? serialize(doc) : null;
 }
 
-export async function createOrder(data: Omit<Order, '_id' | 'createdAt'>): Promise<Order> {
+export async function createOrder(data: Omit<Order, '_id' | 'createdAt' | 'orderNumber'>): Promise<Order> {
   await dbConnect();
-  const doc = await OrderModel.create(data);
+  const orderNumber = await nextOrderNumber();
+  const doc = await OrderModel.create({ ...data, orderNumber });
   return serialize(doc);
 }
 

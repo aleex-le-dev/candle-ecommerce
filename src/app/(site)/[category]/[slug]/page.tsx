@@ -52,12 +52,14 @@ export default async function ProduitPage({
               </h1>
               <div className="flex items-baseline gap-3">
                 <span className="text-3xl font-light text-neutral-900">{product.price.toFixed(2)} €</span>
-                {product.stock <= 5 && product.stock > 0 && (
-                  <span className="text-xs text-amber-600 uppercase tracking-wider">Plus que {product.stock} en stock</span>
-                )}
-                {product.stock === 0 && (
-                  <span className="text-xs text-red-500 uppercase tracking-wider">Rupture de stock</span>
-                )}
+                {(() => {
+                  const stock = Number(product.stock ?? 0);
+                  if (stock <= 0)
+                    return <span className="text-xs text-red-500 uppercase tracking-wider font-medium">Rupture de stock</span>;
+                  if (stock <= 5)
+                    return <span className="text-xs text-amber-600 uppercase tracking-wider">Plus que {stock} en stock</span>;
+                  return <span className="text-xs text-emerald-600 uppercase tracking-wider">{stock} en stock</span>;
+                })()}
               </div>
             </div>
 

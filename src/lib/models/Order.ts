@@ -18,6 +18,8 @@ const OrderSchema = new Schema({
     qty:   { type: Number, required: true },
     image: { type: String, default: '' },
   }],
+  orderNumber: { type: Number, unique: true },
+  userId:     { type: String, default: '' },
   subtotal:   { type: Number, required: true },
   discount:   { type: Number, default: 0 },
   shipping:   { type: Number, required: true },

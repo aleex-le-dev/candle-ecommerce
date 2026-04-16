@@ -74,6 +74,12 @@ export default function BoutiqueClient({ products, categories }: Props) {
                 <div>
                   <h2 className="text-sm font-medium text-neutral-900 uppercase tracking-wide leading-tight">{product.name}</h2>
                   <p className="text-[11px] text-neutral-400 mt-0.5 uppercase tracking-wide">{product.category}</p>
+                  {(() => {
+                    const stock = Number(product.stock ?? 0);
+                    return stock <= 0
+                      ? <p className="text-[11px] text-red-500 mt-1 uppercase tracking-widest font-medium">Rupture de stock</p>
+                      : <p className="text-[11px] text-emerald-600 mt-1 tracking-wide">{stock} en stock</p>;
+                  })()}
                 </div>
                 <span className="text-sm text-neutral-700 font-light ml-2 flex-shrink-0">{product.price.toFixed(2)} €</span>
               </div>

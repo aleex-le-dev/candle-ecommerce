@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useCart } from '@/lib/cart-context';
+import { useAuth } from '@/lib/auth-context';
 
 interface PromoResult {
   valid: boolean;
@@ -15,13 +15,47 @@ interface PromoResult {
 const SHIPPING = 4.9;
 
 export default function Paiement() {
-  const router = useRouter();
   const { items, total, count, removeItem } = useCart();
+  const { user } = useAuth();
+
+  const nameParts = user?.name?.split(' ') ?? [];
+  const defaultPrenom = nameParts[0] ?? '';
+  const defaultNom = nameParts.slice(1).join(' ');
 
   const [form, setForm] = useState({
-    prenom: '', nom: '', email: '', telephone: '',
-    adresse: '', cp: '', ville: '', pays: 'France',
+    prenom: defaultPrenom,
+    nom: defaultNom,
+    email: user?.email ?? '',
+    telephone: '',
+    adresse: '',
+    cp: '',
+    ville: '',
+    pays: 'France',
   });
+
+  // Charge les infos sauvegardées depuis la BDD au montage
+  useEffect(() => {
+    if (!user) return;
+    fetch('/api/auth/me')
+      .then(r => r.json())
+      .then(data => {
+        if (!data.user) return;
+        const u = data.user;
+        const parts = (u.name ?? '').split(' ');
+        setForm(f => ({
+          ...f,
+          prenom:    parts[0]                 || f.prenom,
+          nom:       parts.slice(1).join(' ') || f.nom,
+          email:     u.email                  || f.email,
+          telephone: u.telephone              || f.telephone,
+          adresse:   u.adresse                || f.adresse,
+          cp:        u.cp                     || f.cp,
+          ville:     u.ville                  || f.ville,
+          pays:      u.pays                   || f.pays,
+        }));
+      })
+      .catch(() => {});
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   const [promoInput, setPromoInput] = useState('');
   const [promo, setPromo] = useState<PromoResult | null>(null);
   const [promoLoading, setPromoLoading] = useState(false);
@@ -64,11 +98,31 @@ export default function Paiement() {
     e.preventDefault();
     if (items.length === 0) return;
     setSubmitting(true);
-    // Simulation d'envoi commande
-    await new Promise(r => setTimeout(r, 1200));
-    setSuccess(true);
-    items.forEach(i => removeItem(i._id));
-    setSubmitting(false);
+
+    try {
+      const res = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          customer: form,
+          items: items.map(i => ({ _id: i._id, name: i.name, price: i.price, qty: i.qty, image: i.image })),
+          subtotal: total,
+          discount,
+          shipping,
+          total: grandTotal,
+          promoCode: promo?.promo?.code ?? '',
+        }),
+      });
+
+      if (!res.ok) throw new Error('Erreur serveur');
+
+      setSuccess(true);
+      items.forEach(i => removeItem(i._id));
+    } catch {
+      alert('Une erreur est survenue. Veuillez réessayer.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (items.length === 0 && !success) {
@@ -94,9 +148,16 @@ export default function Paiement() {
         <p className="text-neutral-500 mb-8 max-w-sm">
           Merci pour votre commande. Vous recevrez un email de confirmation dans quelques instants.
         </p>
-        <Link href="/boutique" className="inline-block bg-neutral-900 text-white px-10 py-4 uppercase tracking-widest text-sm hover:bg-neutral-800 transition-colors">
-          Continuer mes achats
-        </Link>
+        <div className="flex flex-col sm:flex-row gap-4">
+          {user && (
+            <Link href="/compte" className="inline-block border border-neutral-900 text-neutral-900 px-8 py-3 uppercase tracking-widest text-sm hover:bg-neutral-900 hover:text-white transition-colors">
+              Mes commandes
+            </Link>
+          )}
+          <Link href="/boutique" className="inline-block bg-neutral-900 text-white px-8 py-3 uppercase tracking-widest text-sm hover:bg-neutral-800 transition-colors">
+            Continuer mes achats
+          </Link>
+        </div>
       </div>
     );
   }
@@ -127,7 +188,27 @@ export default function Paiement() {
         <span className="text-neutral-700">Paiement</span>
       </nav>
 
-      <h1 className="text-3xl font-serif text-neutral-900 mb-10">Finaliser la commande</h1>
+      <div className="flex items-center justify-between mb-10">
+        <h1 className="text-3xl font-serif text-neutral-900">Finaliser la commande</h1>
+        {user && (
+          <div className="text-right">
+            <p className="text-xs text-neutral-400 uppercase tracking-widest">Connecté en tant que</p>
+            <p className="text-sm font-medium text-neutral-900">{user.name}</p>
+          </div>
+        )}
+      </div>
+
+      {!user && (
+        <div className="mb-8 p-4 border border-neutral-200 bg-neutral-50 flex items-center justify-between gap-4">
+          <p className="text-sm text-neutral-600">
+            Vous avez un compte ?{' '}
+            <Link href="/compte/connexion?redirect=/paiement" className="underline underline-offset-4 hover:text-neutral-900 transition-colors">
+              Connectez-vous
+            </Link>{' '}
+            pour accéder à vos informations.
+          </p>
+        </div>
+      )}
 
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
