@@ -12,21 +12,35 @@ export default function Home() {
 
   return (
     <div className="flex flex-col">
-      {/* Hero Section */}
-      <section className="relative h-[80vh] flex items-center justify-center bg-neutral-200">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1603006905393-cfbf06fa6bdf?q=80&w=2938&auto=format&fit=crop')] bg-cover bg-center">
-          <div className="absolute inset-0 bg-black/30" />
+      {/* Premium Hero Section */}
+      <section className="relative h-[90vh] flex items-center justify-center overflow-hidden bg-neutral-900">
+        <div className="absolute inset-0">
+          <img 
+            src="/hero.png" 
+            alt="Lumière" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/20" />
         </div>
-        <div className="relative z-10 text-center px-4">
-          <h1 className="text-5xl md:text-7xl font-serif text-white mb-6 tracking-wide drop-shadow-md">
-            L&apos;Art de la Lumière
+        
+        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto pt-20">
+          <span className="inline-block text-white/70 text-[10px] sm:text-xs uppercase tracking-[0.4em] mb-6 border border-white/20 px-4 py-1.5 rounded-full backdrop-blur-sm">
+            Nouveautés
+          </span>
+          <h1 className="text-5xl sm:text-7xl md:text-8xl font-serif text-white mb-8 tracking-tight font-light drop-shadow-lg">
+            L'Élégance <br className="hidden sm:block"/> <span className="italic font-light">Infinie.</span>
           </h1>
-          <p className="text-lg md:text-xl text-white/90 mb-10 max-w-2xl mx-auto font-light drop-shadow">
-            Des bougies artisanales, naturelles et parfumées pour réchauffer votre intérieur.
+          <p className="text-base md:text-lg text-white/80 mb-12 max-w-2xl mx-auto font-light leading-relaxed drop-shadow">
+            Éclairez chaque instant avec notre collection de bougies parfumées, où la cire artisanale rencontre la haute parfumerie de Grasse.
           </p>
-          <Link href="/boutique" className="inline-block bg-white text-neutral-900 px-8 py-4 uppercase tracking-widest text-sm hover:bg-neutral-100 transition-colors duration-300 shadow-xl hover:shadow-2xl">
-            Découvrir la collection
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <Link 
+              href="/boutique" 
+              className="inline-flex items-center justify-center px-10 py-4 bg-white text-black hover:bg-neutral-200 transition-all duration-500 text-xs uppercase tracking-[0.2em] font-medium shadow-2xl"
+            >
+              Découvrir
+            </Link>
+          </div>
         </div>
       </section>
 

@@ -7,5 +7,14 @@
     "active": true,
     "_id": "1776265336904",
     "createdAt": "2026-04-15T15:02:16.905Z"
+  },
+  {
+    "code": "PANDOU",
+    "type": "percent",
+    "value": 50,
+    "minOrder": 9.92,
+    "active": true,
+    "_id": "1776331512327",
+    "createdAt": "2026-04-16T09:25:12.327Z"
   }
 ]
