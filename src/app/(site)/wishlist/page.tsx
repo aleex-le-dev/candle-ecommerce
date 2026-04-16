@@ -15,9 +15,27 @@ export default function WishlistPage() {
     removeItem(item._id);
   };
 
+  const handleAddAllToCart = () => {
+    items.forEach(item => {
+      addItem({ _id: item._id, name: item.name, price: item.price, image: item.image }, 1);
+    });
+    items.forEach(item => removeItem(item._id));
+  };
+
   return (
     <div className="pt-24 pb-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[70vh]">
-      <h1 className="text-3xl font-serif text-neutral-900 mb-8 border-b border-neutral-200 pb-4">Ma Wishlist</h1>
+      <div className="flex items-center justify-between mb-8 border-b border-neutral-200 pb-4">
+        <h1 className="text-3xl font-serif text-neutral-900">Ma Wishlist</h1>
+        {items.length >= 2 && (
+          <button
+            onClick={handleAddAllToCart}
+            className="flex items-center gap-2 bg-neutral-900 text-white px-6 py-2.5 text-xs uppercase tracking-widest hover:bg-neutral-800 transition-colors"
+          >
+            <ShoppingBag size={14} />
+            Tout ajouter au panier
+          </button>
+        )}
+      </div>
 
       {items.length === 0 ? (
         <div className="text-center py-20">
