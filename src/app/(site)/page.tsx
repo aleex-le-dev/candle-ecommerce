@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 
 export default function Home() {
   const allProducts = getAllProducts();
-  const featured = allProducts.filter(p => p.featured).slice(0, 3);
+  const featured = allProducts.filter(p => p.featured);
   const displayProducts = featured.length > 0 ? featured : allProducts.slice(0, 3);
 
   return (
