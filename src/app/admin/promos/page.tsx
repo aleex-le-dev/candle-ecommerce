@@ -117,11 +117,11 @@ export default function AdminPromos() {
   const isExpired = (p: PromoCode) => !!p.expiresAt && new Date(p.expiresAt) < new Date();
 
   return (
-    <div className="min-h-screen bg-[#080808] font-sans">
+    <div className="min-h-screen bg-[var(--adm-bg)] font-sans">
       {/* Toast */}
       {toast && (
         <div className={`fixed top-6 right-6 z-50 px-5 py-3 rounded-xl text-sm font-medium shadow-2xl backdrop-blur-md
-          ${toast.type === 'success' ? 'bg-emerald-500/10 border border-emerald-500/30 text-emerald-300' : 'bg-red-500/10 border border-red-500/30 text-red-300'}`}>
+          ${toast.type === 'success' ? 'bg-emerald-500/10 border border-emerald-500/30 text-emerald-400' : 'bg-red-500/10 border border-red-500/30 text-red-400'}`}>
           {toast.msg}
         </div>
       )}
@@ -129,12 +129,12 @@ export default function AdminPromos() {
       {/* Delete confirm */}
       {deleteConfirm && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#161616] border border-white/10 rounded-2xl p-8 max-w-sm w-full">
-            <h3 className="text-center text-white font-semibold text-lg mb-2">Supprimer ce code ?</h3>
-            <p className="text-center text-white/40 text-sm mb-6">Cette action est irréversible.</p>
+          <div className="bg-[var(--adm-card)] border border-[var(--adm-border-input)] rounded-2xl p-8 max-w-sm w-full">
+            <h3 className="text-center text-[var(--adm-text)] font-semibold text-lg mb-2">Supprimer ce code ?</h3>
+            <p className="text-center text-[var(--adm-text-40)] text-sm mb-6">Cette action est irréversible.</p>
             <div className="flex gap-3">
-              <button onClick={() => setDeleteConfirm(null)} className="flex-1 py-3 rounded-xl border border-white/10 text-white/60 text-sm hover:bg-white/5">Annuler</button>
-              <button onClick={() => handleDelete(deleteConfirm)} className="flex-1 py-3 rounded-xl bg-red-500/20 border border-red-500/30 text-red-400 text-sm hover:bg-red-500/30">Supprimer</button>
+              <button onClick={() => setDeleteConfirm(null)} className="flex-1 py-3 rounded-xl border border-[var(--adm-border-input)] text-[var(--adm-text-60)] text-sm hover:bg-[var(--adm-surface)] transition-colors">Annuler</button>
+              <button onClick={() => handleDelete(deleteConfirm)} className="flex-1 py-3 rounded-xl bg-red-500/20 border border-red-500/30 text-red-400 text-sm hover:bg-red-500/30 transition-colors">Supprimer</button>
             </div>
           </div>
         </div>
@@ -142,41 +142,41 @@ export default function AdminPromos() {
 
       <div className="flex h-screen overflow-hidden">
         {/* Sidebar */}
-        <aside className="w-64 border-r border-white/5 flex flex-col bg-[#0d0d0d] flex-shrink-0">
-          <div className="p-6 border-b border-white/5">
+        <aside className="w-64 border-r border-[var(--adm-border)] flex flex-col bg-[var(--adm-sidebar)] flex-shrink-0">
+          <div className="p-6 border-b border-[var(--adm-border)]">
             <Link href="/admin" className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center">
                 <span className="text-black font-bold text-sm">L</span>
               </div>
               <div>
-                <p className="text-white font-semibold text-sm">Lumière</p>
-                <p className="text-white/30 text-xs">Administration</p>
+                <p className="text-[var(--adm-text)] font-semibold text-sm">Lumière</p>
+                <p className="text-[var(--adm-text-30)] text-xs">Administration</p>
               </div>
             </Link>
           </div>
           <div className="flex-1 overflow-y-auto p-4 space-y-1">
-            <p className="text-[10px] uppercase tracking-widest text-white/20 px-4 pb-2 pt-1">Catalogue</p>
-            <Link href="/admin" className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-white/40 hover:text-white hover:bg-white/5 transition-all">
+            <p className="text-[10px] uppercase tracking-widest text-[var(--adm-text-20)] px-4 pb-2 pt-1">Catalogue</p>
+            <Link href="/admin" className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-[var(--adm-text-40)] hover:text-[var(--adm-text)] hover:bg-[var(--adm-surface)] transition-all">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
               </svg>
               Produits
             </Link>
 
-            <p className="text-[10px] uppercase tracking-widest text-white/20 px-4 pb-2 pt-4">Marketing</p>
+            <p className="text-[10px] uppercase tracking-widest text-[var(--adm-text-20)] px-4 pb-2 pt-4">Marketing</p>
             <button
               onClick={() => setPanel('list')}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all ${panel === 'list' ? 'bg-white/10 text-white' : 'text-white/40 hover:text-white hover:bg-white/5'}`}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all ${panel === 'list' ? 'bg-[var(--adm-surface-lg)] text-[var(--adm-text)]' : 'text-[var(--adm-text-40)] hover:text-[var(--adm-text)] hover:bg-[var(--adm-surface)]'}`}
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
               </svg>
               Codes promo
-              <span className="ml-auto text-xs bg-white/10 px-2 py-0.5 rounded-full">{promos.length}</span>
+              <span className="ml-auto text-xs bg-[var(--adm-surface-lg)] px-2 py-0.5 rounded-full">{promos.length}</span>
             </button>
             <button
               onClick={openCreate}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all ${panel === 'create' ? 'bg-white/10 text-white' : 'text-white/40 hover:text-white hover:bg-white/5'}`}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all ${panel === 'create' ? 'bg-[var(--adm-surface-lg)] text-[var(--adm-text)]' : 'text-[var(--adm-text-40)] hover:text-[var(--adm-text)] hover:bg-[var(--adm-surface)]'}`}
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" />
@@ -192,12 +192,12 @@ export default function AdminPromos() {
             <div className="p-8">
               <div className="flex items-center justify-between mb-8">
                 <div>
-                  <h1 className="text-2xl font-semibold text-white">Codes Promo</h1>
-                  <p className="text-white/30 text-sm mt-1">Gérez vos codes de réduction</p>
+                  <h1 className="text-2xl font-semibold text-[var(--adm-text)]">Codes Promo</h1>
+                  <p className="text-[var(--adm-text-30)] text-sm mt-1">Gérez vos codes de réduction</p>
                 </div>
                 <button
                   onClick={openCreate}
-                  className="flex items-center gap-2 px-5 py-2.5 bg-white text-black text-sm font-medium rounded-xl hover:bg-white/90 transition-colors"
+                  className="flex items-center gap-2 px-5 py-2.5 bg-[var(--adm-cta-bg)] text-[var(--adm-cta-text)] text-sm font-medium rounded-xl hover:bg-[var(--adm-cta-hover)] transition-colors"
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -208,63 +208,63 @@ export default function AdminPromos() {
 
               {loading ? (
                 <div className="flex items-center justify-center py-24">
-                  <div className="w-6 h-6 border-2 border-white/10 border-t-white rounded-full animate-spin" />
+                  <div className="w-6 h-6 border-2 border-[var(--adm-spinner-ring)] border-t-[var(--adm-spinner-top)] rounded-full animate-spin" />
                 </div>
               ) : promos.length === 0 ? (
                 <div className="text-center py-24">
                   <div className="text-5xl mb-4">🏷️</div>
-                  <p className="text-white/30 text-sm">Aucun code promo. Créez votre premier code !</p>
+                  <p className="text-[var(--adm-text-30)] text-sm">Aucun code promo. Créez votre premier code !</p>
                 </div>
               ) : (
-                <div className="bg-[#161616] border border-white/5 rounded-2xl overflow-hidden">
+                <div className="bg-[var(--adm-card)] border border-[var(--adm-border)] rounded-2xl overflow-hidden">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b border-white/5">
-                        <th className="text-left text-xs font-medium text-white/30 uppercase tracking-wider px-6 py-4">Code</th>
-                        <th className="text-left text-xs font-medium text-white/30 uppercase tracking-wider px-4 py-4">Réduction</th>
-                        <th className="text-left text-xs font-medium text-white/30 uppercase tracking-wider px-4 py-4">Min. commande</th>
-                        <th className="text-left text-xs font-medium text-white/30 uppercase tracking-wider px-4 py-4">Expiration</th>
-                        <th className="text-left text-xs font-medium text-white/30 uppercase tracking-wider px-4 py-4">Statut</th>
+                      <tr className="border-b border-[var(--adm-border)]">
+                        <th className="text-left text-xs font-medium text-[var(--adm-text-30)] uppercase tracking-wider px-6 py-4">Code</th>
+                        <th className="text-left text-xs font-medium text-[var(--adm-text-30)] uppercase tracking-wider px-4 py-4">Réduction</th>
+                        <th className="text-left text-xs font-medium text-[var(--adm-text-30)] uppercase tracking-wider px-4 py-4">Min. commande</th>
+                        <th className="text-left text-xs font-medium text-[var(--adm-text-30)] uppercase tracking-wider px-4 py-4">Expiration</th>
+                        <th className="text-left text-xs font-medium text-[var(--adm-text-30)] uppercase tracking-wider px-4 py-4">Statut</th>
                         <th className="px-4 py-4" />
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-white/5">
+                    <tbody className="divide-y divide-[var(--adm-border)]">
                       {promos.map(p => (
-                        <tr key={p._id} className="group hover:bg-white/[0.02] transition-colors">
+                        <tr key={p._id} className="group hover:bg-[var(--adm-surface)] transition-colors">
                           <td className="px-6 py-4">
-                            <span className="text-white font-mono font-semibold tracking-wider text-sm">{p.code}</span>
+                            <span className="text-[var(--adm-text)] font-mono font-semibold tracking-wider text-sm">{p.code}</span>
                           </td>
-                          <td className="px-4 py-4 text-white text-sm">
+                          <td className="px-4 py-4 text-[var(--adm-text)] text-sm">
                             {p.type === 'percent' ? `${p.value}%` : `${p.value.toFixed(2)} €`}
                           </td>
-                          <td className="px-4 py-4 text-white/50 text-sm">
+                          <td className="px-4 py-4 text-[var(--adm-text-40)] text-sm">
                             {p.minOrder > 0 ? `${p.minOrder.toFixed(2)} €` : '—'}
                           </td>
                           <td className="px-4 py-4 text-sm">
                             {p.expiresAt ? (
-                              <span className={isExpired(p) ? 'text-red-400' : 'text-white/50'}>
+                              <span className={isExpired(p) ? 'text-red-400' : 'text-[var(--adm-text-40)]'}>
                                 {new Date(p.expiresAt).toLocaleDateString('fr-FR')}
                                 {isExpired(p) && ' (expiré)'}
                               </span>
                             ) : (
-                              <span className="text-white/30">Sans limite</span>
+                              <span className="text-[var(--adm-text-30)]">Sans limite</span>
                             )}
                           </td>
                           <td className="px-4 py-4">
                             {p.active && !isExpired(p) ? (
-                              <span className="text-xs text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded-full">Actif</span>
+                              <span className="text-xs text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded-full">Actif</span>
                             ) : (
-                              <span className="text-xs text-white/30 bg-white/5 px-3 py-1 rounded-full">Inactif</span>
+                              <span className="text-xs text-[var(--adm-text-30)] bg-[var(--adm-surface)] px-3 py-1 rounded-full">Inactif</span>
                             )}
                           </td>
                           <td className="px-4 py-4">
                             <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                              <button onClick={() => openEdit(p)} className="p-2 rounded-lg hover:bg-white/10 text-white/40 hover:text-white transition-all">
+                              <button onClick={() => openEdit(p)} className="p-2 rounded-lg hover:bg-[var(--adm-surface-lg)] text-[var(--adm-text-40)] hover:text-[var(--adm-text)] transition-all">
                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                 </svg>
                               </button>
-                              <button onClick={() => setDeleteConfirm(p._id)} className="p-2 rounded-lg hover:bg-red-500/10 text-white/40 hover:text-red-400 transition-all">
+                              <button onClick={() => setDeleteConfirm(p._id)} className="p-2 rounded-lg hover:bg-red-500/10 text-[var(--adm-text-40)] hover:text-red-400 transition-all">
                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                 </svg>
@@ -283,44 +283,42 @@ export default function AdminPromos() {
           {(panel === 'create' || panel === 'edit') && (
             <div className="p-8 max-w-xl">
               <div className="flex items-center gap-4 mb-8">
-                <button onClick={() => setPanel('list')} className="p-2 rounded-xl hover:bg-white/5 text-white/40 hover:text-white transition-all">
+                <button onClick={() => setPanel('list')} className="p-2 rounded-xl hover:bg-[var(--adm-surface)] text-[var(--adm-text-40)] hover:text-[var(--adm-text)] transition-all">
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
                   </svg>
                 </button>
-                <h1 className="text-2xl font-semibold text-white">
+                <h1 className="text-2xl font-semibold text-[var(--adm-text)]">
                   {panel === 'create' ? 'Nouveau code promo' : 'Modifier le code'}
                 </h1>
               </div>
 
               <div className="space-y-5">
-                {/* Code */}
                 <div>
-                  <label className="block text-xs font-medium text-white/40 uppercase tracking-wider mb-2">Code *</label>
+                  <label className="block text-xs font-medium text-[var(--adm-text-40)] uppercase tracking-wider mb-2">Code *</label>
                   <input
                     type="text"
                     value={form.code}
                     onChange={e => setForm(f => ({ ...f, code: e.target.value.toUpperCase() }))}
                     placeholder="EX: SUMMER20"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-white/30 font-mono tracking-wider text-sm"
+                    className="w-full bg-[var(--adm-surface)] border border-[var(--adm-border-input)] rounded-xl px-4 py-3 text-[var(--adm-text)] placeholder-[var(--adm-placeholder)] focus:outline-none focus:border-[var(--adm-border-focus)] font-mono tracking-wider text-sm"
                   />
                 </div>
 
-                {/* Type + Valeur */}
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-medium text-white/40 uppercase tracking-wider mb-2">Type *</label>
+                    <label className="block text-xs font-medium text-[var(--adm-text-40)] uppercase tracking-wider mb-2">Type *</label>
                     <select
                       value={form.type}
                       onChange={e => setForm(f => ({ ...f, type: e.target.value as 'percent' | 'fixed' }))}
-                      className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-white/30 text-sm"
+                      className="w-full bg-[var(--adm-select)] border border-[var(--adm-border-input)] rounded-xl px-4 py-3 text-[var(--adm-text)] focus:outline-none focus:border-[var(--adm-border-focus)] text-sm"
                     >
                       <option value="percent">Pourcentage (%)</option>
                       <option value="fixed">Montant fixe (€)</option>
                     </select>
                   </div>
                   <div>
-                    <label className="block text-xs font-medium text-white/40 uppercase tracking-wider mb-2">
+                    <label className="block text-xs font-medium text-[var(--adm-text-40)] uppercase tracking-wider mb-2">
                       Valeur * {form.type === 'percent' ? '(%)' : '(€)'}
                     </label>
                     <input
@@ -331,14 +329,13 @@ export default function AdminPromos() {
                       value={form.value}
                       onChange={e => setForm(f => ({ ...f, value: e.target.value }))}
                       placeholder={form.type === 'percent' ? '20' : '10.00'}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-white/30 text-sm"
+                      className="w-full bg-[var(--adm-surface)] border border-[var(--adm-border-input)] rounded-xl px-4 py-3 text-[var(--adm-text)] placeholder-[var(--adm-placeholder)] focus:outline-none focus:border-[var(--adm-border-focus)] text-sm"
                     />
                   </div>
                 </div>
 
-                {/* Min commande */}
                 <div>
-                  <label className="block text-xs font-medium text-white/40 uppercase tracking-wider mb-2">Commande minimum (€)</label>
+                  <label className="block text-xs font-medium text-[var(--adm-text-40)] uppercase tracking-wider mb-2">Commande minimum (€)</label>
                   <input
                     type="number"
                     min="0"
@@ -346,47 +343,44 @@ export default function AdminPromos() {
                     value={form.minOrder}
                     onChange={e => setForm(f => ({ ...f, minOrder: e.target.value }))}
                     placeholder="0.00 (aucun minimum)"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-white/30 text-sm"
+                    className="w-full bg-[var(--adm-surface)] border border-[var(--adm-border-input)] rounded-xl px-4 py-3 text-[var(--adm-text)] placeholder-[var(--adm-placeholder)] focus:outline-none focus:border-[var(--adm-border-focus)] text-sm"
                   />
                 </div>
 
-                {/* Expiration */}
                 <div>
-                  <label className="block text-xs font-medium text-white/40 uppercase tracking-wider mb-2">Date d'expiration</label>
+                  <label className="block text-xs font-medium text-[var(--adm-text-40)] uppercase tracking-wider mb-2">Date d&apos;expiration</label>
                   <input
                     type="date"
                     value={form.expiresAt}
                     onChange={e => setForm(f => ({ ...f, expiresAt: e.target.value }))}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-white/30 text-sm [color-scheme:dark]"
+                    className="w-full bg-[var(--adm-surface)] border border-[var(--adm-border-input)] rounded-xl px-4 py-3 text-[var(--adm-text)] focus:outline-none focus:border-[var(--adm-border-focus)] text-sm"
                   />
-                  <p className="text-white/20 text-xs mt-1">Laisser vide pour un code sans limite de durée</p>
+                  <p className="text-[var(--adm-text-20)] text-xs mt-1">Laisser vide pour un code sans limite de durée</p>
                 </div>
 
-                {/* Actif */}
-                <label className="flex items-center gap-4 p-4 bg-white/5 border border-white/10 rounded-xl cursor-pointer hover:bg-white/[0.07] transition-colors">
+                <label className="flex items-center gap-4 p-4 bg-[var(--adm-surface)] border border-[var(--adm-border-input)] rounded-xl cursor-pointer hover:bg-[var(--adm-surface-md)] transition-colors">
                   <div className="relative">
                     <input type="checkbox" checked={form.active} onChange={e => setForm(f => ({ ...f, active: e.target.checked }))} className="sr-only" />
-                    <div className={`w-10 h-6 rounded-full transition-colors ${form.active ? 'bg-emerald-500' : 'bg-white/10'}`}>
+                    <div className={`w-10 h-6 rounded-full transition-colors ${form.active ? 'bg-emerald-500' : 'bg-[var(--adm-surface-lg)]'}`}>
                       <div className={`w-4 h-4 bg-white rounded-full shadow-md absolute top-1 transition-transform ${form.active ? 'translate-x-5' : 'translate-x-1'}`} />
                     </div>
                   </div>
                   <div>
-                    <p className="text-white text-sm font-medium">Code actif</p>
-                    <p className="text-white/30 text-xs">Les clients peuvent utiliser ce code</p>
+                    <p className="text-[var(--adm-text)] text-sm font-medium">Code actif</p>
+                    <p className="text-[var(--adm-text-30)] text-xs">Les clients peuvent utiliser ce code</p>
                   </div>
                 </label>
 
-                {/* Actions */}
-                <div className="flex items-center justify-between pt-4 border-t border-white/5">
-                  <button onClick={() => setPanel('list')} className="px-5 py-2.5 rounded-xl text-white/40 text-sm hover:text-white hover:bg-white/5 transition-all">
+                <div className="flex items-center justify-between pt-4 border-t border-[var(--adm-border)]">
+                  <button onClick={() => setPanel('list')} className="px-5 py-2.5 rounded-xl text-[var(--adm-text-40)] text-sm hover:text-[var(--adm-text)] hover:bg-[var(--adm-surface)] transition-all">
                     Annuler
                   </button>
                   <button
                     onClick={handleSave}
                     disabled={saving}
-                    className="px-6 py-2.5 rounded-xl bg-white text-black text-sm font-medium hover:bg-white/90 transition-colors disabled:opacity-50 flex items-center gap-2"
+                    className="px-6 py-2.5 rounded-xl bg-[var(--adm-cta-bg)] text-[var(--adm-cta-text)] text-sm font-medium hover:bg-[var(--adm-cta-hover)] transition-colors disabled:opacity-50 flex items-center gap-2"
                   >
-                    {saving && <div className="w-4 h-4 border-2 border-black/20 border-t-black rounded-full animate-spin" />}
+                    {saving && <div className="w-4 h-4 border-2 border-[var(--adm-cta-spinner-ring)] border-t-[var(--adm-cta-spinner-top)] rounded-full animate-spin" />}
                     {panel === 'create' ? 'Créer le code' : 'Enregistrer'}
                   </button>
                 </div>

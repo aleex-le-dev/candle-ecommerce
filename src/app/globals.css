@@ -5,6 +5,64 @@
   --foreground: #171717;
 }
 
+/* ── Admin theme tokens ── */
+[data-admin-theme="dark"] {
+  --adm-bg: #080808;
+  --adm-sidebar: #0d0d0d;
+  --adm-card: #161616;
+  --adm-select: #1a1a1a;
+  --adm-surface: rgba(255,255,255,0.05);
+  --adm-surface-md: rgba(255,255,255,0.07);
+  --adm-surface-lg: rgba(255,255,255,0.10);
+  --adm-border: rgba(255,255,255,0.05);
+  --adm-border-input: rgba(255,255,255,0.10);
+  --adm-border-focus: rgba(255,255,255,0.30);
+  --adm-text: #ffffff;
+  --adm-text-60: rgba(255,255,255,0.60);
+  --adm-text-40: rgba(255,255,255,0.40);
+  --adm-text-30: rgba(255,255,255,0.30);
+  --adm-text-20: rgba(255,255,255,0.20);
+  --adm-placeholder: rgba(255,255,255,0.20);
+  --adm-cta-bg: #ffffff;
+  --adm-cta-text: #000000;
+  --adm-cta-hover: rgba(255,255,255,0.90);
+  --adm-cta-spinner-ring: rgba(0,0,0,0.20);
+  --adm-cta-spinner-top: #000000;
+  --adm-spinner-ring: rgba(255,255,255,0.10);
+  --adm-spinner-top: #ffffff;
+}
+
+[data-admin-theme="light"] {
+  --adm-bg: #f5f4f1;
+  --adm-sidebar: #eceae6;
+  --adm-card: #ffffff;
+  --adm-select: #ede9e3;
+  --adm-surface: rgba(0,0,0,0.04);
+  --adm-surface-md: rgba(0,0,0,0.06);
+  --adm-surface-lg: rgba(0,0,0,0.09);
+  --adm-border: rgba(0,0,0,0.07);
+  --adm-border-input: rgba(0,0,0,0.13);
+  --adm-border-focus: rgba(0,0,0,0.40);
+  --adm-text: #111111;
+  --adm-text-60: rgba(0,0,0,0.60);
+  --adm-text-40: rgba(0,0,0,0.50);
+  --adm-text-30: rgba(0,0,0,0.45);
+  --adm-text-20: rgba(0,0,0,0.30);
+  --adm-placeholder: rgba(0,0,0,0.25);
+  --adm-cta-bg: #111111;
+  --adm-cta-text: #ffffff;
+  --adm-cta-hover: #2a2a2a;
+  --adm-cta-spinner-ring: rgba(255,255,255,0.20);
+  --adm-cta-spinner-top: #ffffff;
+  --adm-spinner-ring: rgba(0,0,0,0.10);
+  --adm-spinner-top: #111111;
+}
+
+[data-admin-theme="dark"] input[type="date"],
+[data-admin-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
+[data-admin-theme="light"] input[type="date"],
+[data-admin-theme="light"] input[type="datetime-local"] { color-scheme: light; }
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

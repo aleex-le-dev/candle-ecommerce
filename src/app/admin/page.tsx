@@ -137,11 +137,11 @@ export default function AdminPage() {
   const totalStock = products.reduce((a, p) => a + p.stock, 0);
 
   return (
-    <div className="min-h-screen bg-[#080808] font-sans">
+    <div className="min-h-screen bg-[var(--adm-bg)] font-sans">
       {/* Toast */}
       {toast && (
         <div className={`fixed top-6 right-6 z-50 px-5 py-3 rounded-xl text-sm font-medium shadow-2xl backdrop-blur-md transition-all
-          ${toast.type === 'success' ? 'bg-emerald-500/10 border border-emerald-500/30 text-emerald-300' : 'bg-red-500/10 border border-red-500/30 text-red-300'}`}>
+          ${toast.type === 'success' ? 'bg-emerald-500/10 border border-emerald-500/30 text-emerald-400' : 'bg-red-500/10 border border-red-500/30 text-red-400'}`}>
           {toast.msg}
         </div>
       )}
@@ -149,16 +149,16 @@ export default function AdminPage() {
       {/* Delete Confirm Modal */}
       {deleteConfirm && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#161616] border border-white/10 rounded-2xl p-8 max-w-sm w-full shadow-2xl">
+          <div className="bg-[var(--adm-card)] border border-[var(--adm-border-input)] rounded-2xl p-8 max-w-sm w-full shadow-2xl">
             <div className="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center mb-4 mx-auto">
               <svg className="w-6 h-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
               </svg>
             </div>
-            <h3 className="text-center text-white font-semibold text-lg mb-2">Supprimer ce produit ?</h3>
-            <p className="text-center text-white/40 text-sm mb-6">Cette action est irréversible.</p>
+            <h3 className="text-center text-[var(--adm-text)] font-semibold text-lg mb-2">Supprimer ce produit ?</h3>
+            <p className="text-center text-[var(--adm-text-40)] text-sm mb-6">Cette action est irréversible.</p>
             <div className="flex gap-3">
-              <button onClick={() => setDeleteConfirm(null)} className="flex-1 py-3 rounded-xl border border-white/10 text-white/60 text-sm hover:bg-white/5 transition-colors">
+              <button onClick={() => setDeleteConfirm(null)} className="flex-1 py-3 rounded-xl border border-[var(--adm-border-input)] text-[var(--adm-text-60)] text-sm hover:bg-[var(--adm-surface)] transition-colors">
                 Annuler
               </button>
               <button onClick={() => handleDelete(deleteConfirm)} className="flex-1 py-3 rounded-xl bg-red-500/20 border border-red-500/30 text-red-400 text-sm hover:bg-red-500/30 transition-colors">
@@ -171,39 +171,42 @@ export default function AdminPage() {
 
       <div className="flex h-screen overflow-hidden">
         {/* Sidebar */}
-        <aside className="w-64 border-r border-white/5 flex flex-col bg-[#0d0d0d] flex-shrink-0">
-          <div className="p-6 border-b border-white/5">
+        <aside className="w-64 border-r border-[var(--adm-border)] flex flex-col bg-[var(--adm-sidebar)] flex-shrink-0">
+          <div className="p-6 border-b border-[var(--adm-border)]">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center">
                 <span className="text-black font-bold text-sm">L</span>
               </div>
               <div>
-                <p className="text-white font-semibold text-sm">Lumière</p>
-                <p className="text-white/30 text-xs">Administration</p>
+                <p className="text-[var(--adm-text)] font-semibold text-sm">Lumière</p>
+                <p className="text-[var(--adm-text-30)] text-xs">Administration</p>
               </div>
             </div>
           </div>
-          
+
           <div className="flex-1 overflow-y-auto p-4 space-y-1">
-            {/* Gestion */}
-            <p className="text-[10px] uppercase tracking-widest text-white/20 px-4 pb-2 pt-1">Catalogue</p>
+            <p className="text-[10px] uppercase tracking-widest text-[var(--adm-text-20)] px-4 pb-2 pt-1">Catalogue</p>
             <button
               onClick={() => setPanel('list')}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all ${
-                panel === 'list' ? 'bg-white/10 text-white' : 'text-white/40 hover:text-white hover:bg-white/5'
+                panel === 'list'
+                  ? 'bg-[var(--adm-surface-lg)] text-[var(--adm-text)]'
+                  : 'text-[var(--adm-text-40)] hover:text-[var(--adm-text)] hover:bg-[var(--adm-surface)]'
               }`}
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
               </svg>
               Tous les produits
-              <span className="ml-auto text-xs bg-white/10 px-2 py-0.5 rounded-full">{products.length}</span>
+              <span className="ml-auto text-xs bg-[var(--adm-surface-lg)] px-2 py-0.5 rounded-full">{products.length}</span>
             </button>
 
             <button
               onClick={openCreate}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all ${
-                panel === 'create' ? 'bg-white/10 text-white' : 'text-white/40 hover:text-white hover:bg-white/5'
+                panel === 'create'
+                  ? 'bg-[var(--adm-surface-lg)] text-[var(--adm-text)]'
+                  : 'text-[var(--adm-text-40)] hover:text-[var(--adm-text)] hover:bg-[var(--adm-surface)]'
               }`}
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -212,38 +215,10 @@ export default function AdminPage() {
               Nouveau produit
             </button>
 
-            {/* Fiches produits */}
-            {products.length > 0 && (
-              <>
-                <p className="text-[10px] uppercase tracking-widest text-white/20 px-4 pb-2 pt-4">Fiches produits</p>
-                {products.map(p => (
-                  <a
-                    key={p._id}
-                    href={productUrl(p.category, p.name)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm text-white/30 hover:text-white hover:bg-white/5 transition-all group"
-                  >
-                    <div className="w-5 h-5 rounded-md overflow-hidden bg-white/5 flex-shrink-0">
-                      {p.image
-                        ? <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
-                        : <span className="text-[8px] flex items-center justify-center w-full h-full">🕯️</span>
-                      }
-                    </div>
-                    <span className="truncate flex-1">{p.name}</span>
-                    <svg className="w-3 h-3 opacity-0 group-hover:opacity-40 flex-shrink-0 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                    </svg>
-                  </a>
-                ))}
-              </>
-            )}
-
-            {/* Marketing */}
-            <p className="text-[10px] uppercase tracking-widest text-white/20 px-4 pb-2 pt-4">Marketing</p>
+            <p className="text-[10px] uppercase tracking-widest text-[var(--adm-text-20)] px-4 pb-2 pt-4">Marketing</p>
             <a
               href="/admin/promos"
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-white/40 hover:text-white hover:bg-white/5 transition-all"
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-[var(--adm-text-40)] hover:text-[var(--adm-text)] hover:bg-[var(--adm-surface)] transition-all"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
@@ -257,15 +232,14 @@ export default function AdminPage() {
         <main className="flex-1 overflow-y-auto">
           {panel === 'list' && (
             <div className="p-8">
-              {/* Header */}
               <div className="flex items-center justify-between mb-8">
                 <div>
-                  <h1 className="text-2xl font-semibold text-white">Catalogue</h1>
-                  <p className="text-white/30 text-sm mt-1">Gérez votre collection de bougies</p>
+                  <h1 className="text-2xl font-semibold text-[var(--adm-text)]">Catalogue</h1>
+                  <p className="text-[var(--adm-text-30)] text-sm mt-1">Gérez votre collection de bougies</p>
                 </div>
                 <button
                   onClick={openCreate}
-                  className="flex items-center gap-2 px-5 py-2.5 bg-white text-black text-sm font-medium rounded-xl hover:bg-white/90 transition-colors"
+                  className="flex items-center gap-2 px-5 py-2.5 bg-[var(--adm-cta-bg)] text-[var(--adm-cta-text)] text-sm font-medium rounded-xl hover:bg-[var(--adm-cta-hover)] transition-colors"
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -281,12 +255,12 @@ export default function AdminPage() {
                   { label: 'En vedette', value: featured, icon: '⭐' },
                   { label: 'Stock total', value: totalStock + ' unités', icon: '🏷️' },
                 ].map(stat => (
-                  <div key={stat.label} className="bg-[#161616] border border-white/5 rounded-2xl p-5">
+                  <div key={stat.label} className="bg-[var(--adm-card)] border border-[var(--adm-border)] rounded-2xl p-5">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-white/30 text-sm">{stat.label}</span>
+                      <span className="text-[var(--adm-text-30)] text-sm">{stat.label}</span>
                       <span className="text-lg">{stat.icon}</span>
                     </div>
-                    <p className="text-2xl font-semibold text-white">{stat.value}</p>
+                    <p className="text-2xl font-semibold text-[var(--adm-text)]">{stat.value}</p>
                   </div>
                 ))}
               </div>
@@ -294,65 +268,65 @@ export default function AdminPage() {
               {/* Table */}
               {loading ? (
                 <div className="flex items-center justify-center py-24">
-                  <div className="w-6 h-6 border-2 border-white/10 border-t-white rounded-full animate-spin" />
+                  <div className="w-6 h-6 border-2 border-[var(--adm-spinner-ring)] border-t-[var(--adm-spinner-top)] rounded-full animate-spin" />
                 </div>
               ) : products.length === 0 ? (
                 <div className="text-center py-24">
                   <div className="text-5xl mb-4">🕯️</div>
-                  <p className="text-white/30 text-sm">Aucun produit. Créez votre premier produit !</p>
+                  <p className="text-[var(--adm-text-30)] text-sm">Aucun produit. Créez votre premier produit !</p>
                 </div>
               ) : (
-                <div className="bg-[#161616] border border-white/5 rounded-2xl overflow-hidden">
+                <div className="bg-[var(--adm-card)] border border-[var(--adm-border)] rounded-2xl overflow-hidden">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b border-white/5">
-                        <th className="text-left text-xs font-medium text-white/30 uppercase tracking-wider px-6 py-4">Produit</th>
-                        <th className="text-left text-xs font-medium text-white/30 uppercase tracking-wider px-4 py-4">Catégorie</th>
-                        <th className="text-left text-xs font-medium text-white/30 uppercase tracking-wider px-4 py-4">Prix</th>
-                        <th className="text-left text-xs font-medium text-white/30 uppercase tracking-wider px-4 py-4">Stock</th>
-                        <th className="text-left text-xs font-medium text-white/30 uppercase tracking-wider px-4 py-4">Statut</th>
+                      <tr className="border-b border-[var(--adm-border)]">
+                        <th className="text-left text-xs font-medium text-[var(--adm-text-30)] uppercase tracking-wider px-6 py-4">Produit</th>
+                        <th className="text-left text-xs font-medium text-[var(--adm-text-30)] uppercase tracking-wider px-4 py-4">Catégorie</th>
+                        <th className="text-left text-xs font-medium text-[var(--adm-text-30)] uppercase tracking-wider px-4 py-4">Prix</th>
+                        <th className="text-left text-xs font-medium text-[var(--adm-text-30)] uppercase tracking-wider px-4 py-4">Stock</th>
+                        <th className="text-left text-xs font-medium text-[var(--adm-text-30)] uppercase tracking-wider px-4 py-4">Statut</th>
                         <th className="px-4 py-4" />
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-white/5">
+                    <tbody className="divide-y divide-[var(--adm-border)]">
                       {products.map((product) => (
-                        <tr key={product._id} className="group hover:bg-white/[0.02] transition-colors">
+                        <tr key={product._id} className="group hover:bg-[var(--adm-surface)] transition-colors">
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-4">
-                              <div className="w-12 h-12 rounded-xl overflow-hidden bg-white/5 flex-shrink-0">
+                              <div className="w-12 h-12 rounded-xl overflow-hidden bg-[var(--adm-surface)] flex-shrink-0">
                                 {product.image ? (
                                   <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
                                 ) : (
-                                  <div className="w-full h-full flex items-center justify-center text-white/20 text-xl">🕯️</div>
+                                  <div className="w-full h-full flex items-center justify-center text-[var(--adm-text-20)] text-xl">🕯️</div>
                                 )}
                               </div>
                               <div>
-                                <p className="text-white text-sm font-medium">{product.name}</p>
-                                <p className="text-white/30 text-xs mt-0.5 line-clamp-1">{product.description}</p>
+                                <p className="text-[var(--adm-text)] text-sm font-medium">{product.name}</p>
+                                <p className="text-[var(--adm-text-30)] text-xs mt-0.5 line-clamp-1">{product.description}</p>
                               </div>
                             </div>
                           </td>
                           <td className="px-4 py-4">
-                            <span className="text-xs text-white/50 bg-white/5 px-3 py-1 rounded-full">{product.category}</span>
+                            <span className="text-xs text-[var(--adm-text-40)] bg-[var(--adm-surface)] px-3 py-1 rounded-full">{product.category}</span>
                           </td>
-                          <td className="px-4 py-4 text-white text-sm font-medium">{product.price.toFixed(2)} €</td>
+                          <td className="px-4 py-4 text-[var(--adm-text)] text-sm font-medium">{product.price.toFixed(2)} €</td>
                           <td className="px-4 py-4">
-                            <span className={`text-sm font-medium ${product.stock > 5 ? 'text-emerald-400' : product.stock > 0 ? 'text-amber-400' : 'text-red-400'}`}>
+                            <span className={`text-sm font-medium ${product.stock > 5 ? 'text-emerald-500' : product.stock > 0 ? 'text-amber-500' : 'text-red-500'}`}>
                               {product.stock}
                             </span>
                           </td>
                           <td className="px-4 py-4">
                             {product.featured ? (
-                              <span className="text-xs text-amber-400 bg-amber-500/10 border border-amber-500/20 px-3 py-1 rounded-full">Vedette</span>
+                              <span className="text-xs text-amber-500 bg-amber-500/10 border border-amber-500/20 px-3 py-1 rounded-full">Vedette</span>
                             ) : (
-                              <span className="text-xs text-white/30 bg-white/5 px-3 py-1 rounded-full">Standard</span>
+                              <span className="text-xs text-[var(--adm-text-30)] bg-[var(--adm-surface)] px-3 py-1 rounded-full">Standard</span>
                             )}
                           </td>
                           <td className="px-4 py-4">
                             <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                               <button
                                 onClick={() => openEdit(product)}
-                                className="p-2 rounded-lg hover:bg-white/10 text-white/40 hover:text-white transition-all"
+                                className="p-2 rounded-lg hover:bg-[var(--adm-surface-lg)] text-[var(--adm-text-40)] hover:text-[var(--adm-text)] transition-all"
                               >
                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -361,7 +335,7 @@ export default function AdminPage() {
                               <a
                                 href={productUrl(product.category, product.name)}
                                 target="_blank"
-                                className="p-2 rounded-lg hover:bg-white/10 text-white/40 hover:text-white transition-all"
+                                className="p-2 rounded-lg hover:bg-[var(--adm-surface-lg)] text-[var(--adm-text-40)] hover:text-[var(--adm-text)] transition-all"
                               >
                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -369,7 +343,7 @@ export default function AdminPage() {
                               </a>
                               <button
                                 onClick={() => setDeleteConfirm(product._id)}
-                                className="p-2 rounded-lg hover:bg-red-500/10 text-white/40 hover:text-red-400 transition-all"
+                                className="p-2 rounded-lg hover:bg-red-500/10 text-[var(--adm-text-40)] hover:text-red-400 transition-all"
                               >
                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -388,34 +362,35 @@ export default function AdminPage() {
 
           {(panel === 'create' || panel === 'edit') && (
             <div className="p-8 max-w-3xl">
-              {/* Form header */}
               <div className="flex items-center gap-4 mb-8">
                 <button
                   onClick={() => setPanel('list')}
-                  className="p-2 rounded-xl hover:bg-white/5 text-white/40 hover:text-white transition-all"
+                  className="p-2 rounded-xl hover:bg-[var(--adm-surface)] text-[var(--adm-text-40)] hover:text-[var(--adm-text)] transition-all"
                 >
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
                   </svg>
                 </button>
                 <div>
-                  <h1 className="text-2xl font-semibold text-white">
+                  <h1 className="text-2xl font-semibold text-[var(--adm-text)]">
                     {panel === 'create' ? 'Nouveau produit' : 'Modifier le produit'}
                   </h1>
-                  <p className="text-white/30 text-sm mt-1">
+                  <p className="text-[var(--adm-text-30)] text-sm mt-1">
                     {panel === 'create' ? 'Remplissez les informations du produit' : 'Mettez à jour les informations'}
                   </p>
                 </div>
               </div>
 
               {/* Tabs */}
-              <div className="flex gap-1 mb-8 bg-white/5 p-1 rounded-xl w-fit">
+              <div className="flex gap-1 mb-8 bg-[var(--adm-surface)] p-1 rounded-xl w-fit">
                 {([['info', 'Informations'], ['images', 'Images'], ['stock', 'Stock & Options']] as const).map(([tab, label]) => (
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
                     className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${
-                      activeTab === tab ? 'bg-white text-black' : 'text-white/40 hover:text-white'
+                      activeTab === tab
+                        ? 'bg-[var(--adm-cta-bg)] text-[var(--adm-cta-text)]'
+                        : 'text-[var(--adm-text-40)] hover:text-[var(--adm-text)]'
                     }`}
                   >
                     {label}
@@ -429,29 +404,29 @@ export default function AdminPage() {
                   <>
                     <div className="grid grid-cols-2 gap-4">
                       <div className="col-span-2">
-                        <label className="block text-xs font-medium text-white/40 uppercase tracking-wider mb-2">Nom du produit *</label>
+                        <label className="block text-xs font-medium text-[var(--adm-text-40)] uppercase tracking-wider mb-2">Nom du produit *</label>
                         <input
                           type="text"
                           value={form.name}
                           onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
                           placeholder="Ex : Fleur de Lavande"
-                          className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-white/30 transition-colors text-sm"
+                          className="w-full bg-[var(--adm-surface)] border border-[var(--adm-border-input)] rounded-xl px-4 py-3 text-[var(--adm-text)] placeholder-[var(--adm-placeholder)] focus:outline-none focus:border-[var(--adm-border-focus)] transition-colors text-sm"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-xs font-medium text-white/40 uppercase tracking-wider mb-2">Catégorie</label>
+                        <label className="block text-xs font-medium text-[var(--adm-text-40)] uppercase tracking-wider mb-2">Catégorie</label>
                         <select
                           value={form.category}
                           onChange={e => setForm(f => ({ ...f, category: e.target.value }))}
-                          className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors text-sm"
+                          className="w-full bg-[var(--adm-select)] border border-[var(--adm-border-input)] rounded-xl px-4 py-3 text-[var(--adm-text)] focus:outline-none focus:border-[var(--adm-border-focus)] transition-colors text-sm"
                         >
                           {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
                         </select>
                       </div>
 
                       <div>
-                        <label className="block text-xs font-medium text-white/40 uppercase tracking-wider mb-2">Prix (€) *</label>
+                        <label className="block text-xs font-medium text-[var(--adm-text-40)] uppercase tracking-wider mb-2">Prix (€) *</label>
                         <input
                           type="number"
                           min="0"
@@ -459,40 +434,40 @@ export default function AdminPage() {
                           value={form.price}
                           onChange={e => setForm(f => ({ ...f, price: e.target.value }))}
                           placeholder="24.00"
-                          className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-white/30 transition-colors text-sm"
+                          className="w-full bg-[var(--adm-surface)] border border-[var(--adm-border-input)] rounded-xl px-4 py-3 text-[var(--adm-text)] placeholder-[var(--adm-placeholder)] focus:outline-none focus:border-[var(--adm-border-focus)] transition-colors text-sm"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-xs font-medium text-white/40 uppercase tracking-wider mb-2">Description courte</label>
+                      <label className="block text-xs font-medium text-[var(--adm-text-40)] uppercase tracking-wider mb-2">Description courte</label>
                       <textarea
                         rows={3}
                         value={form.description}
                         onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
                         placeholder="Description affichée sur la fiche produit..."
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-white/30 transition-colors text-sm resize-none"
+                        className="w-full bg-[var(--adm-surface)] border border-[var(--adm-border-input)] rounded-xl px-4 py-3 text-[var(--adm-text)] placeholder-[var(--adm-placeholder)] focus:outline-none focus:border-[var(--adm-border-focus)] transition-colors text-sm resize-none"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-medium text-white/40 uppercase tracking-wider mb-2">Composition & Détails</label>
+                      <label className="block text-xs font-medium text-[var(--adm-text-40)] uppercase tracking-wider mb-2">Composition & Détails</label>
                       <textarea
                         rows={4}
                         value={form.details}
                         onChange={e => setForm(f => ({ ...f, details: e.target.value }))}
                         placeholder="Cire, mèche, parfum, temps de combustion..."
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-white/30 transition-colors text-sm resize-none"
+                        className="w-full bg-[var(--adm-surface)] border border-[var(--adm-border-input)] rounded-xl px-4 py-3 text-[var(--adm-text)] placeholder-[var(--adm-placeholder)] focus:outline-none focus:border-[var(--adm-border-focus)] transition-colors text-sm resize-none"
                       />
                     </div>
 
                     <div>
                       <div className="flex items-center justify-between mb-2">
-                        <label className="block text-xs font-medium text-white/40 uppercase tracking-wider">Variables / Caractéristiques</label>
+                        <label className="block text-xs font-medium text-[var(--adm-text-40)] uppercase tracking-wider">Variables / Caractéristiques</label>
                         <button
                           type="button"
                           onClick={() => setForm(f => ({ ...f, variables: [...f.variables, { name: '', value: '' }] }))}
-                          className="text-xs text-white/60 hover:text-white flex items-center gap-1"
+                          className="text-xs text-[var(--adm-text-60)] hover:text-[var(--adm-text)] flex items-center gap-1"
                         >
                           <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
                           Ajouter
@@ -510,7 +485,7 @@ export default function AdminPage() {
                                 setForm(f => ({ ...f, variables: newVars }));
                               }}
                               placeholder="Nom (ex: Poids)"
-                              className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-white/30 transition-colors text-sm"
+                              className="flex-1 bg-[var(--adm-surface)] border border-[var(--adm-border-input)] rounded-xl px-4 py-3 text-[var(--adm-text)] placeholder-[var(--adm-placeholder)] focus:outline-none focus:border-[var(--adm-border-focus)] transition-colors text-sm"
                             />
                             <input
                               type="text"
@@ -521,7 +496,7 @@ export default function AdminPage() {
                                 setForm(f => ({ ...f, variables: newVars }));
                               }}
                               placeholder="Valeur (ex: 180g)"
-                              className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-white/30 transition-colors text-sm"
+                              className="flex-1 bg-[var(--adm-surface)] border border-[var(--adm-border-input)] rounded-xl px-4 py-3 text-[var(--adm-text)] placeholder-[var(--adm-placeholder)] focus:outline-none focus:border-[var(--adm-border-focus)] transition-colors text-sm"
                             />
                             <button
                               type="button"
@@ -537,12 +512,12 @@ export default function AdminPage() {
                           </div>
                         ))}
                         {form.variables.length === 0 && (
-                          <div className="text-center py-6 border border-dashed border-white/10 rounded-xl">
-                            <p className="text-white/30 text-sm mb-2">Aucune variable définie</p>
+                          <div className="text-center py-6 border border-dashed border-[var(--adm-border-input)] rounded-xl">
+                            <p className="text-[var(--adm-text-30)] text-sm mb-2">Aucune variable définie</p>
                             <button
                               type="button"
                               onClick={() => setForm(f => ({ ...f, variables: [{ name: '', value: '' }] }))}
-                              className="text-xs px-4 py-2 rounded-lg bg-white/5 text-white hover:bg-white/10 transition-colors"
+                              className="text-xs px-4 py-2 rounded-lg bg-[var(--adm-surface)] text-[var(--adm-text)] hover:bg-[var(--adm-surface-lg)] transition-colors"
                             >
                               Ajouter une variable
                             </button>
@@ -557,23 +532,23 @@ export default function AdminPage() {
                 {activeTab === 'images' && (
                   <>
                     <div>
-                      <label className="block text-xs font-medium text-white/40 uppercase tracking-wider mb-2">Image principale (URL)</label>
+                      <label className="block text-xs font-medium text-[var(--adm-text-40)] uppercase tracking-wider mb-2">Image principale (URL)</label>
                       <input
                         type="url"
                         value={form.image}
                         onChange={e => setForm(f => ({ ...f, image: e.target.value }))}
                         placeholder="https://images.unsplash.com/..."
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-white/30 transition-colors text-sm"
+                        className="w-full bg-[var(--adm-surface)] border border-[var(--adm-border-input)] rounded-xl px-4 py-3 text-[var(--adm-text)] placeholder-[var(--adm-placeholder)] focus:outline-none focus:border-[var(--adm-border-focus)] transition-colors text-sm"
                       />
                       {form.image && (
-                        <div className="mt-3 w-32 h-32 rounded-xl overflow-hidden border border-white/10">
+                        <div className="mt-3 w-32 h-32 rounded-xl overflow-hidden border border-[var(--adm-border-input)]">
                           <img src={form.image} alt="Preview" className="w-full h-full object-cover" />
                         </div>
                       )}
                     </div>
 
                     <div>
-                      <label className="block text-xs font-medium text-white/40 uppercase tracking-wider mb-2">Photos de galerie (URL)</label>
+                      <label className="block text-xs font-medium text-[var(--adm-text-40)] uppercase tracking-wider mb-2">Photos de galerie (URL)</label>
                       <div className="space-y-3">
                         {form.gallery.map((url, i) => (
                           <div key={i} className="flex gap-3">
@@ -586,17 +561,17 @@ export default function AdminPage() {
                                 setForm(f => ({ ...f, gallery: g }));
                               }}
                               placeholder={`Photo galerie ${i + 1}`}
-                              className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-white/30 transition-colors text-sm"
+                              className="flex-1 bg-[var(--adm-surface)] border border-[var(--adm-border-input)] rounded-xl px-4 py-3 text-[var(--adm-text)] placeholder-[var(--adm-placeholder)] focus:outline-none focus:border-[var(--adm-border-focus)] transition-colors text-sm"
                             />
                             {url && (
-                              <div className="w-12 h-12 rounded-lg overflow-hidden border border-white/10 flex-shrink-0">
+                              <div className="w-12 h-12 rounded-lg overflow-hidden border border-[var(--adm-border-input)] flex-shrink-0">
                                 <img src={url} alt={`Galerie ${i+1}`} className="w-full h-full object-cover" />
                               </div>
                             )}
                           </div>
                         ))}
                       </div>
-                      <p className="text-white/20 text-xs mt-2">Conseil : utilisez des liens Unsplash (images.unsplash.com)</p>
+                      <p className="text-[var(--adm-text-20)] text-xs mt-2">Conseil : utilisez des liens Unsplash (images.unsplash.com)</p>
                     </div>
                   </>
                 )}
@@ -605,20 +580,20 @@ export default function AdminPage() {
                 {activeTab === 'stock' && (
                   <>
                     <div>
-                      <label className="block text-xs font-medium text-white/40 uppercase tracking-wider mb-2">Quantité en stock</label>
+                      <label className="block text-xs font-medium text-[var(--adm-text-40)] uppercase tracking-wider mb-2">Quantité en stock</label>
                       <input
                         type="number"
                         min="0"
                         value={form.stock}
                         onChange={e => setForm(f => ({ ...f, stock: e.target.value }))}
                         placeholder="0"
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-white/30 transition-colors text-sm"
+                        className="w-full bg-[var(--adm-surface)] border border-[var(--adm-border-input)] rounded-xl px-4 py-3 text-[var(--adm-text)] placeholder-[var(--adm-placeholder)] focus:outline-none focus:border-[var(--adm-border-focus)] transition-colors text-sm"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-medium text-white/40 uppercase tracking-wider mb-3">Options</label>
-                      <label className="flex items-center gap-4 p-4 bg-white/5 border border-white/10 rounded-xl cursor-pointer hover:bg-white/[0.07] transition-colors">
+                      <label className="block text-xs font-medium text-[var(--adm-text-40)] uppercase tracking-wider mb-3">Options</label>
+                      <label className="flex items-center gap-4 p-4 bg-[var(--adm-surface)] border border-[var(--adm-border-input)] rounded-xl cursor-pointer hover:bg-[var(--adm-surface-md)] transition-colors">
                         <div className="relative">
                           <input
                             type="checkbox"
@@ -626,13 +601,13 @@ export default function AdminPage() {
                             onChange={e => setForm(f => ({ ...f, featured: e.target.checked }))}
                             className="sr-only"
                           />
-                          <div className={`w-10 h-6 rounded-full transition-colors ${form.featured ? 'bg-amber-500' : 'bg-white/10'}`}>
+                          <div className={`w-10 h-6 rounded-full transition-colors ${form.featured ? 'bg-amber-500' : 'bg-[var(--adm-surface-lg)]'}`}>
                             <div className={`w-4 h-4 bg-white rounded-full shadow-md absolute top-1 transition-transform ${form.featured ? 'translate-x-5' : 'translate-x-1'}`} />
                           </div>
                         </div>
                         <div>
-                          <p className="text-white text-sm font-medium">Produit en vedette</p>
-                          <p className="text-white/30 text-xs">Affiché sur la page d'accueil parmi les bestsellers</p>
+                          <p className="text-[var(--adm-text)] text-sm font-medium">Produit en vedette</p>
+                          <p className="text-[var(--adm-text-30)] text-xs">Affiché sur la page d&apos;accueil parmi les bestsellers</p>
                         </div>
                       </label>
                     </div>
@@ -640,10 +615,10 @@ export default function AdminPage() {
                 )}
 
                 {/* Actions */}
-                <div className="flex items-center justify-between pt-4 border-t border-white/5 mt-8">
+                <div className="flex items-center justify-between pt-4 border-t border-[var(--adm-border)] mt-8">
                   <button
                     onClick={() => setPanel('list')}
-                    className="px-5 py-2.5 rounded-xl text-white/40 text-sm hover:text-white hover:bg-white/5 transition-all"
+                    className="px-5 py-2.5 rounded-xl text-[var(--adm-text-40)] text-sm hover:text-[var(--adm-text)] hover:bg-[var(--adm-surface)] transition-all"
                   >
                     Annuler
                   </button>
@@ -651,7 +626,7 @@ export default function AdminPage() {
                     {activeTab !== 'stock' && (
                       <button
                         onClick={() => setActiveTab(activeTab === 'info' ? 'images' : 'stock')}
-                        className="px-5 py-2.5 rounded-xl border border-white/10 text-white/60 text-sm hover:bg-white/5 transition-all"
+                        className="px-5 py-2.5 rounded-xl border border-[var(--adm-border-input)] text-[var(--adm-text-60)] text-sm hover:bg-[var(--adm-surface)] transition-all"
                       >
                         Suivant →
                       </button>
@@ -659,9 +634,9 @@ export default function AdminPage() {
                     <button
                       onClick={handleSave}
                       disabled={saving}
-                      className="px-6 py-2.5 rounded-xl bg-white text-black text-sm font-medium hover:bg-white/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                      className="px-6 py-2.5 rounded-xl bg-[var(--adm-cta-bg)] text-[var(--adm-cta-text)] text-sm font-medium hover:bg-[var(--adm-cta-hover)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                     >
-                      {saving && <div className="w-4 h-4 border-2 border-black/20 border-t-black rounded-full animate-spin" />}
+                      {saving && <div className="w-4 h-4 border-2 border-[var(--adm-cta-spinner-ring)] border-t-[var(--adm-cta-spinner-top)] rounded-full animate-spin" />}
                       {panel === 'create' ? 'Créer le produit' : 'Enregistrer'}
                     </button>
                   </div>
