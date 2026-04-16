@@ -1,0 +1,26 @@
+[
+  {
+    "_id": "1",
+    "icon": "🌿",
+    "title": "Naturel",
+    "desc": "Matières premières sélectionnées pour leur origine naturelle et leur qualité.",
+    "order": 0,
+    "createdAt": "2026-04-16T09:53:56.605Z"
+  },
+  {
+    "_id": "2",
+    "icon": "🤲",
+    "title": "Artisanal",
+    "desc": "Chaque bougie est coulée et assemblée à la main dans notre atelier.",
+    "order": 1,
+    "createdAt": "2026-04-16T09:53:56.605Z"
+  },
+  {
+    "_id": "3",
+    "icon": "♻️",
+    "title": "Durable",
+    "desc": "Pots en verre réutilisables, emballages recyclés, impact minimal.",
+    "order": 2,
+    "createdAt": "2026-04-16T09:53:56.606Z"
+  }
+]
