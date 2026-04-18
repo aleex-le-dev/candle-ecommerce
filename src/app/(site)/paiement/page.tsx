@@ -9,13 +9,14 @@ interface PromoResult {
   valid: boolean;
   error?: string;
   discount: number;
+  freeShipping?: boolean;
   promo?: { code: string; type: string; value: number };
 }
 
 const SHIPPING = 4.9;
 
 export default function Paiement() {
-  const { items, total, count, removeItem } = useCart();
+  const { items, total, count } = useCart();
   const { user } = useAuth();
 
   const nameParts = user?.name?.split(' ') ?? [];
@@ -61,9 +62,10 @@ export default function Paiement() {
   const [promoLoading, setPromoLoading] = useState(false);
   const [promoError, setPromoError] = useState('');
   const [submitting, setSubmitting] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const [cguAccepted, setCguAccepted] = useState(false);
 
-  const shipping = total >= 50 ? 0 : SHIPPING;
+  const freeShipping = promo?.valid && promo.freeShipping;
+  const shipping = (total >= 50 || freeShipping) ? 0 : SHIPPING;
   const discount = promo?.valid ? promo.discount : 0;
   const grandTotal = Math.max(0, total - discount + shipping);
 
@@ -100,7 +102,7 @@ export default function Paiement() {
     setSubmitting(true);
 
     try {
-      const res = await fetch('/api/orders', {
+      const res = await fetch('/api/stripe/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -111,21 +113,20 @@ export default function Paiement() {
           shipping,
           total: grandTotal,
           promoCode: promo?.promo?.code ?? '',
+          freeShipping: freeShipping ?? false,
         }),
       });
 
-      if (!res.ok) throw new Error('Erreur serveur');
-
-      setSuccess(true);
-      items.forEach(i => removeItem(i._id));
-    } catch {
-      alert('Une erreur est survenue. Veuillez réessayer.');
-    } finally {
+      const data = await res.json();
+      if (!res.ok || !data.url) throw new Error(data.error || 'Erreur');
+      window.location.href = data.url;
+    } catch (err: any) {
+      alert(err.message || 'Une erreur est survenue. Veuillez réessayer.');
       setSubmitting(false);
     }
   };
 
-  if (items.length === 0 && !success) {
+  if (items.length === 0) {
     return (
       <div className="pt-24 pb-16 max-w-xl mx-auto px-4 text-center min-h-[60vh]">
         <p className="text-neutral-500 mb-6">Votre panier est vide.</p>
@@ -136,31 +137,6 @@ export default function Paiement() {
     );
   }
 
-  if (success) {
-    return (
-      <div className="pt-24 pb-16 max-w-xl mx-auto px-4 text-center min-h-[60vh] flex flex-col items-center justify-center">
-        <div className="w-16 h-16 rounded-full bg-emerald-50 flex items-center justify-center mb-6">
-          <svg className="w-8 h-8 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
-        </div>
-        <h1 className="text-3xl font-serif text-neutral-900 mb-4">Commande confirmée !</h1>
-        <p className="text-neutral-500 mb-8 max-w-sm">
-          Merci pour votre commande. Vous recevrez un email de confirmation dans quelques instants.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4">
-          {user && (
-            <Link href="/compte" className="inline-block border border-neutral-900 text-neutral-900 px-8 py-3 uppercase tracking-widest text-sm hover:bg-neutral-900 hover:text-white transition-colors">
-              Mes commandes
-            </Link>
-          )}
-          <Link href="/boutique" className="inline-block bg-neutral-900 text-white px-8 py-3 uppercase tracking-widest text-sm hover:bg-neutral-800 transition-colors">
-            Continuer mes achats
-          </Link>
-        </div>
-      </div>
-    );
-  }
 
   const field = (id: keyof typeof form, label: string, type = 'text', required = true) => (
     <div>
@@ -255,20 +231,24 @@ export default function Paiement() {
               </div>
             </section>
 
-            {/* Paiement mock */}
+            {/* Paiement Stripe */}
             <section>
               <h2 className="text-xs uppercase tracking-widest text-neutral-500 mb-5 pb-3 border-b border-neutral-100">
-                Paiement
+                Paiement sécurisé
               </h2>
-              <div className="border border-neutral-200 p-5 rounded-sm bg-neutral-50 flex items-center gap-4">
-                <div className="flex gap-2">
-                  {['💳', '🏦'].map(icon => (
-                    <div key={icon} className="w-12 h-8 border border-neutral-200 bg-white rounded flex items-center justify-center text-lg">
-                      {icon}
-                    </div>
+              <div className="border border-neutral-200 p-5 bg-neutral-50 space-y-3">
+                <div className="flex items-center gap-3">
+                  <svg className="w-4 h-4 text-neutral-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                  <p className="text-xs text-neutral-500">Paiement 100% sécurisé via Stripe — chiffrement SSL/TLS</p>
+                </div>
+                <div className="flex gap-2 flex-wrap">
+                  {['Visa', 'Mastercard', 'Amex', 'Apple Pay', 'Google Pay'].map(m => (
+                    <span key={m} className="text-[10px] uppercase tracking-widest border border-neutral-200 bg-white px-2.5 py-1 text-neutral-500">{m}</span>
                   ))}
                 </div>
-                <p className="text-xs text-neutral-400">Paiement sécurisé — chiffrement SSL</p>
+                <p className="text-[11px] text-neutral-400">Vous serez redirigé vers la page de paiement Stripe sécurisée.</p>
               </div>
             </section>
           </div>
@@ -304,7 +284,7 @@ export default function Paiement() {
                 {promo?.valid ? (
                   <div className="flex items-center justify-between bg-emerald-50 border border-emerald-200 px-3 py-2 rounded-sm">
                     <span className="text-xs text-emerald-700 font-medium">
-                      {promoInput.toUpperCase()} — {promo.promo?.type === 'percent' ? `−${promo.promo.value}%` : `−${promo.discount.toFixed(2)} €`}
+                      {promoInput.toUpperCase()} — {promo.freeShipping ? 'Livraison offerte' : promo.promo?.type === 'percent' ? `−${promo.promo.value}%` : `−${promo.discount.toFixed(2)} €`}
                     </span>
                     <button type="button" onClick={removePromo} className="text-emerald-400 hover:text-emerald-700 text-xs ml-2">✕</button>
                   </div>
@@ -353,15 +333,45 @@ export default function Paiement() {
                 </div>
               </div>
 
+              {/* Acceptation CGU */}
+              <label className="flex items-start gap-3 mb-4 cursor-pointer group">
+                <div className="relative mt-0.5 flex-shrink-0">
+                  <input
+                    type="checkbox"
+                    checked={cguAccepted}
+                    onChange={e => setCguAccepted(e.target.checked)}
+                    className="sr-only"
+                  />
+                  <div className={`w-4 h-4 border transition-colors ${cguAccepted ? 'bg-neutral-900 border-neutral-900' : 'bg-white border-neutral-300 group-hover:border-neutral-500'}`}>
+                    {cguAccepted && (
+                      <svg className="w-3 h-3 text-white absolute top-0.5 left-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                  </div>
+                </div>
+                <span className="text-xs text-neutral-500 leading-relaxed">
+                  J&apos;ai lu et j&apos;accepte les{' '}
+                  <a href="/cgu" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-neutral-900 transition-colors" onClick={e => e.stopPropagation()}>
+                    Conditions Générales d&apos;Utilisation
+                  </a>
+                  {' '}et les{' '}
+                  <a href="/cgv" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-neutral-900 transition-colors" onClick={e => e.stopPropagation()}>
+                    Conditions Générales de Vente
+                  </a>
+                  .
+                </span>
+              </label>
+
               <button
                 type="submit"
-                disabled={submitting}
-                className="w-full bg-neutral-900 text-white py-4 text-sm uppercase tracking-widest hover:bg-neutral-800 transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
+                disabled={submitting || !cguAccepted}
+                className="w-full bg-neutral-900 text-white py-4 text-sm uppercase tracking-widest hover:bg-neutral-800 transition-colors disabled:opacity-40 flex items-center justify-center gap-2"
               >
                 {submitting && (
                   <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 )}
-                {submitting ? 'Traitement…' : 'Passer la commande'}
+                {submitting ? 'Redirection vers Stripe…' : 'Payer maintenant'}
               </button>
 
               <p className="text-center text-xs text-neutral-400 mt-4">

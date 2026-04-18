@@ -198,11 +198,23 @@ export default function CompteClient({ user, orders }: { user: UserInfo; orders:
                           <p className="text-xs font-mono text-neutral-600">#{formatOrderNumber(order.orderNumber)}</p>
                           {date && <p className="text-xs text-neutral-400 mt-0.5">{date}</p>}
                         </div>
-                        <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-3 flex-wrap justify-end">
                           <span className={`text-[11px] uppercase tracking-widest px-3 py-1 border rounded-full ${s.color}`}>
                             {s.label}
                           </span>
                           <span className="text-sm font-medium text-neutral-900">{order.total.toFixed(2)} €</span>
+                          {order.status !== 'cancelled' && (
+                            <a
+                              href={`/api/orders/${order._id}/invoice`}
+                              download
+                              className="flex items-center gap-1.5 text-[11px] uppercase tracking-widest border border-neutral-200 px-3 py-1 text-neutral-500 hover:border-neutral-900 hover:text-neutral-900 transition-colors"
+                            >
+                              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V19a2 2 0 002 2h14a2 2 0 002-2v-2" />
+                              </svg>
+                              Facture PDF
+                            </a>
+                          )}
                         </div>
                       </div>
                       <div className="space-y-3">

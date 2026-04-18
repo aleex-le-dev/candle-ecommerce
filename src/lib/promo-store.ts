@@ -4,7 +4,7 @@ import PromoModel from './models/Promo';
 export interface PromoCode {
   _id: string;
   code: string;
-  type: 'percent' | 'fixed';
+  type: 'percent' | 'fixed' | 'shipping';
   value: number;
   minOrder: number;
   active: boolean;
@@ -59,6 +59,7 @@ export async function validatePromo(code: string, total: number): Promise<{
   valid: boolean;
   error?: string;
   discount: number;
+  freeShipping?: boolean;
   promo?: PromoCode;
 }> {
   const promo = await getPromoByCode(code);
@@ -69,6 +70,9 @@ export async function validatePromo(code: string, total: number): Promise<{
   }
   if (total < promo.minOrder) {
     return { valid: false, error: `Commande minimum ${promo.minOrder.toFixed(2)} € requis`, discount: 0 };
+  }
+  if (promo.type === 'shipping') {
+    return { valid: true, discount: 0, freeShipping: true, promo };
   }
   const discount = promo.type === 'percent'
     ? Math.round(total * promo.value) / 100

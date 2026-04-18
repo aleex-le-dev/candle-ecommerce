@@ -42,6 +42,7 @@ export interface Order {
   total: number;
   promoCode: string;
   status: 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled';
+  stripeSessionId?: string;
   createdAt: string;
 }
 

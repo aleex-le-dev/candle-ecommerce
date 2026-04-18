@@ -7,7 +7,7 @@ import AdminSidebar from '@/components/AdminSidebar';
 interface PromoCode {
   _id: string;
   code: string;
-  type: 'percent' | 'fixed';
+  type: 'percent' | 'fixed' | 'shipping';
   value: number;
   minOrder: number;
   active: boolean;
@@ -17,7 +17,7 @@ interface PromoCode {
 
 const EMPTY_FORM = {
   code: '',
-  type: 'percent' as 'percent' | 'fixed',
+  type: 'percent' as 'percent' | 'fixed' | 'shipping',
   value: '',
   minOrder: '',
   active: true,
@@ -65,7 +65,7 @@ export default function AdminPromos() {
   const openEdit = (p: PromoCode) => {
     setForm({
       code: p.code,
-      type: p.type,
+      type: p.type as 'percent' | 'fixed' | 'shipping',
       value: String(p.value),
       minOrder: String(p.minOrder),
       active: p.active,
@@ -76,8 +76,12 @@ export default function AdminPromos() {
   };
 
   const handleSave = async () => {
-    if (!form.code || !form.value) {
-      showToast('Code et valeur sont requis', 'error');
+    if (!form.code) {
+      showToast('Le code est requis', 'error');
+      return;
+    }
+    if (form.type !== 'shipping' && !form.value) {
+      showToast('La valeur est requise', 'error');
       return;
     }
     setSaving(true);
@@ -185,7 +189,7 @@ export default function AdminPromos() {
                             <span className="text-[var(--adm-text)] font-mono font-semibold tracking-wider text-sm">{p.code}</span>
                           </td>
                           <td className="px-4 py-4 text-[var(--adm-text)] text-sm">
-                            {p.type === 'percent' ? `${p.value}%` : `${p.value.toFixed(2)} €`}
+                            {p.type === 'shipping' ? 'Livraison offerte' : p.type === 'percent' ? `${p.value}%` : `${p.value.toFixed(2)} €`}
                           </td>
                           <td className="px-4 py-4 text-[var(--adm-text-40)] text-sm">
                             {p.minOrder > 0 ? `${p.minOrder.toFixed(2)} €` : '—'}
@@ -260,28 +264,31 @@ export default function AdminPromos() {
                     <label className="block text-xs font-medium text-[var(--adm-text-40)] uppercase tracking-wider mb-2">Type *</label>
                     <select
                       value={form.type}
-                      onChange={e => setForm(f => ({ ...f, type: e.target.value as 'percent' | 'fixed' }))}
+                      onChange={e => setForm(f => ({ ...f, type: e.target.value as 'percent' | 'fixed' | 'shipping', value: '' }))}
                       className="w-full bg-[var(--adm-select)] border border-[var(--adm-border-input)] rounded-xl px-4 py-3 text-[var(--adm-text)] focus:outline-none focus:border-[var(--adm-border-focus)] text-sm"
                     >
                       <option value="percent">Pourcentage (%)</option>
                       <option value="fixed">Montant fixe (€)</option>
+                      <option value="shipping">Livraison gratuite</option>
                     </select>
                   </div>
-                  <div>
-                    <label className="block text-xs font-medium text-[var(--adm-text-40)] uppercase tracking-wider mb-2">
-                      Valeur * {form.type === 'percent' ? '(%)' : '(€)'}
-                    </label>
-                    <input
-                      type="number"
-                      min="0"
-                      step={form.type === 'percent' ? '1' : '0.01'}
-                      max={form.type === 'percent' ? '100' : undefined}
-                      value={form.value}
-                      onChange={e => setForm(f => ({ ...f, value: e.target.value }))}
-                      placeholder={form.type === 'percent' ? '20' : '10.00'}
-                      className="w-full bg-[var(--adm-surface)] border border-[var(--adm-border-input)] rounded-xl px-4 py-3 text-[var(--adm-text)] placeholder-[var(--adm-placeholder)] focus:outline-none focus:border-[var(--adm-border-focus)] text-sm"
-                    />
-                  </div>
+                  {form.type !== 'shipping' && (
+                    <div>
+                      <label className="block text-xs font-medium text-[var(--adm-text-40)] uppercase tracking-wider mb-2">
+                        Valeur * {form.type === 'percent' ? '(%)' : '(€)'}
+                      </label>
+                      <input
+                        type="number"
+                        min="0"
+                        step={form.type === 'percent' ? '1' : '0.01'}
+                        max={form.type === 'percent' ? '100' : undefined}
+                        value={form.value}
+                        onChange={e => setForm(f => ({ ...f, value: e.target.value }))}
+                        placeholder={form.type === 'percent' ? '20' : '10.00'}
+                        className="w-full bg-[var(--adm-surface)] border border-[var(--adm-border-input)] rounded-xl px-4 py-3 text-[var(--adm-text)] placeholder-[var(--adm-placeholder)] focus:outline-none focus:border-[var(--adm-border-focus)] text-sm"
+                      />
+                    </div>
+                  )}
                 </div>
 
                 <div>
