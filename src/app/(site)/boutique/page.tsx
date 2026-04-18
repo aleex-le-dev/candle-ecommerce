@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Suspense } from 'react';
 import { getAllProducts } from '@/lib/products-store';
 import BoutiqueClient from './BoutiqueClient';
 
@@ -34,7 +35,9 @@ export default async function Boutique() {
           </p>
         </div>
       ) : (
-        <BoutiqueClient products={products} categories={categories} />
+        <Suspense fallback={null}>
+          <BoutiqueClient products={products} categories={categories} />
+        </Suspense>
       )}
     </div>
   );

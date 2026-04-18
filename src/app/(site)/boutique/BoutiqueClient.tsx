@@ -57,11 +57,20 @@ export default function BoutiqueClient({ products, categories }: Props) {
             <Link href={productUrl(product.category, product.name)} key={product._id} className="group block">
               <div className="aspect-[4/5] bg-neutral-100 mb-4 overflow-hidden relative rounded-sm">
                 {product.image ? (
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700 ease-out"
-                  />
+                  <>
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className={`object-cover w-full h-full transition-opacity duration-500 ease-out absolute inset-0 ${product.gallery?.[0] ? 'group-hover:opacity-0' : 'group-hover:scale-105'}`}
+                    />
+                    {product.gallery?.[0] && (
+                      <img
+                        src={product.gallery[0]}
+                        alt={product.name}
+                        className="object-cover w-full h-full absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out"
+                      />
+                    )}
+                  </>
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-4xl">🕯️</div>
                 )}
