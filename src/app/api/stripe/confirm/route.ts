@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import dbConnect from '@/lib/mongodb';
 import { createOrder } from '@/lib/order-store';
 import { verifySession, SESSION_COOKIE } from '@/lib/auth';
+import { sendInvoiceEmail } from '@/lib/mailer';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
@@ -64,6 +65,9 @@ export async function GET(req: NextRequest) {
 
   // Nettoyer la commande en attente
   await db.collection('pending_orders').deleteOne({ _id: new mongoose.Types.ObjectId(pendingId) });
+
+  // Envoyer la facture par email (sans bloquer la réponse)
+  sendInvoiceEmail(order.customer.email, order).catch(() => {});
 
   return NextResponse.json({ orderNumber: order.orderNumber });
 }

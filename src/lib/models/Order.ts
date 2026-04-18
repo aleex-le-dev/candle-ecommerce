@@ -25,7 +25,7 @@ const OrderSchema = new Schema({
   shipping:   { type: Number, required: true },
   total:      { type: Number, required: true },
   promoCode:  { type: String, default: '' },
-  status:          { type: String, enum: ['pending', 'confirmed', 'shipped', 'delivered', 'cancelled'], default: 'confirmed' },
+  status:          { type: String, enum: ['pending', 'confirmed', 'shipped', 'delivered', 'cancelled', 'refunded'], default: 'confirmed' },
   stripeSessionId: { type: String, default: '' },
 }, { timestamps: true });
 

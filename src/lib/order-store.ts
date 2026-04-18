@@ -41,7 +41,7 @@ export interface Order {
   shipping: number;
   total: number;
   promoCode: string;
-  status: 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled';
+  status: 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled' | 'refunded';
   stripeSessionId?: string;
   createdAt: string;
 }

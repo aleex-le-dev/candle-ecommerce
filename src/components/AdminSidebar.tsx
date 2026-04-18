@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 
-interface Counts { products: number; promos: number; histoire: number; valeurs: number; categories: number; }
+interface Counts { products: number; promos: number; histoire: number; valeurs: number; categories: number; orders: number; }
 
 export default function AdminSidebar() {
   const pathname = usePathname();
@@ -56,7 +56,14 @@ export default function AdminSidebar() {
       </div>
 
       <div className="flex-1 overflow-y-auto p-4 space-y-1">
-        <p className="text-[10px] uppercase tracking-widest text-[var(--adm-text-20)] px-4 pb-2 pt-1">Catalogue</p>
+        <p className="text-[10px] uppercase tracking-widest text-[var(--adm-text-20)] px-4 pb-2 pt-1">Ventes</p>
+
+        {item('/admin/commandes', 'Commandes',
+          <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>,
+          counts?.orders
+        )}
+
+        <p className="text-[10px] uppercase tracking-widest text-[var(--adm-text-20)] px-4 pb-2 pt-4">Catalogue</p>
 
         {item('/admin', 'Produits',
           <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>,

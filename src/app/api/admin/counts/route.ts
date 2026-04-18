@@ -8,14 +8,15 @@ export async function GET() {
   try {
     await dbConnect();
     const db = mongoose.connection.db!;
-    const [products, promos, histoire, valeurs, categories] = await Promise.all([
+    const [products, promos, histoire, valeurs, categories, orders] = await Promise.all([
       db.collection('products').countDocuments(),
       db.collection('promos').countDocuments(),
       db.collection('articles').countDocuments(),
       db.collection('valeurs').countDocuments(),
       db.collection('categories').countDocuments(),
+      db.collection('orders').countDocuments(),
     ]);
-    return NextResponse.json({ products, promos, histoire, valeurs, categories });
+    return NextResponse.json({ products, promos, histoire, valeurs, categories, orders });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
