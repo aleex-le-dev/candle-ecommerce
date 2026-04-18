@@ -6,7 +6,9 @@ const PromoSchema = new Schema({
   value:     { type: Number, default: 0 },
   minOrder:  { type: Number, default: 0 },
   active:    { type: Boolean, default: true },
+  isPublic:  { type: Boolean, default: false },
   expiresAt: { type: Date },
 }, { timestamps: { createdAt: 'createdAt', updatedAt: false } });
 
-export default mongoose.models.Promo ?? mongoose.model('Promo', PromoSchema);
+delete (mongoose.models as any).Promo;
+export default mongoose.model('Promo', PromoSchema);

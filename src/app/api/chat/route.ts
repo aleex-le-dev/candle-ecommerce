@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic';
 async function getStoreContext(db: any) {
   const [products, promos] = await Promise.all([
     db.collection('products').find({}).toArray(),
-    db.collection('promos').find({ active: true }).toArray(),
+    db.collection('promos').find({ active: true, isPublic: true }).toArray(),
   ]);
 
   const categories = [...new Set(products.map((p: any) => p.category))];

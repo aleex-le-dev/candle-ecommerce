@@ -8,6 +8,7 @@ export interface PromoCode {
   value: number;
   minOrder: number;
   active: boolean;
+  isPublic: boolean;
   expiresAt?: string;
   createdAt: string;
 }
@@ -20,6 +21,7 @@ function serialize(doc: any): PromoCode {
     value: doc.value,
     minOrder: doc.minOrder ?? 0,
     active: doc.active ?? true,
+    isPublic: doc.isPublic ?? false,
     expiresAt: doc.expiresAt ? new Date(doc.expiresAt).toISOString() : undefined,
     createdAt: doc.createdAt?.toISOString?.() ?? doc.createdAt ?? '',
   };

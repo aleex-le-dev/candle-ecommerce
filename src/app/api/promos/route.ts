@@ -13,7 +13,7 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-    const { code, type, value, minOrder, active, expiresAt } = await req.json();
+    const { code, type, value, minOrder, active, isPublic, expiresAt } = await req.json();
     if (!code || !type || value == null) {
       return NextResponse.json({ error: 'code, type et value sont requis' }, { status: 400 });
     }
@@ -23,6 +23,7 @@ export async function POST(req: NextRequest) {
       value: Number(value),
       minOrder: Number(minOrder) || 0,
       active: active !== false,
+      isPublic: isPublic === true,
       expiresAt: expiresAt || undefined,
     });
     return NextResponse.json(promo, { status: 201 });

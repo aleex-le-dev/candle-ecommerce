@@ -11,6 +11,7 @@ interface PromoCode {
   value: number;
   minOrder: number;
   active: boolean;
+  isPublic: boolean;
   expiresAt?: string;
   createdAt: string;
 }
@@ -21,6 +22,7 @@ const EMPTY_FORM = {
   value: '',
   minOrder: '',
   active: true,
+  isPublic: false,
   expiresAt: '',
 };
 
@@ -69,6 +71,7 @@ export default function AdminPromos() {
       value: String(p.value),
       minOrder: String(p.minOrder),
       active: p.active,
+      isPublic: p.isPublic,
       expiresAt: p.expiresAt ? p.expiresAt.split('T')[0] : '',
     });
     setEditId(p._id);
@@ -178,6 +181,7 @@ export default function AdminPromos() {
                         <th className="text-left text-xs font-medium text-[var(--adm-text-30)] uppercase tracking-wider px-4 py-4">Réduction</th>
                         <th className="text-left text-xs font-medium text-[var(--adm-text-30)] uppercase tracking-wider px-4 py-4">Min. commande</th>
                         <th className="text-left text-xs font-medium text-[var(--adm-text-30)] uppercase tracking-wider px-4 py-4">Expiration</th>
+                        <th className="text-left text-xs font-medium text-[var(--adm-text-30)] uppercase tracking-wider px-4 py-4">Visibilité</th>
                         <th className="text-left text-xs font-medium text-[var(--adm-text-30)] uppercase tracking-wider px-4 py-4">Statut</th>
                         <th className="px-4 py-4" />
                       </tr>
@@ -202,6 +206,13 @@ export default function AdminPromos() {
                               </span>
                             ) : (
                               <span className="text-[var(--adm-text-30)]">Sans limite</span>
+                            )}
+                          </td>
+                          <td className="px-4 py-4">
+                            {p.isPublic ? (
+                              <span className="text-xs text-blue-400 bg-blue-400/10 border border-blue-400/20 px-3 py-1 rounded-full">Public</span>
+                            ) : (
+                              <span className="text-xs text-[var(--adm-text-30)] bg-[var(--adm-surface)] border border-[var(--adm-border)] px-3 py-1 rounded-full">Privé</span>
                             )}
                           </td>
                           <td className="px-4 py-4">
@@ -325,6 +336,19 @@ export default function AdminPromos() {
                   <div>
                     <p className="text-[var(--adm-text)] text-sm font-medium">Code actif</p>
                     <p className="text-[var(--adm-text-30)] text-xs">Les clients peuvent utiliser ce code</p>
+                  </div>
+                </label>
+
+                <label className="flex items-center gap-4 p-4 bg-[var(--adm-surface)] border border-[var(--adm-border-input)] rounded-xl cursor-pointer hover:bg-[var(--adm-surface-md)] transition-colors">
+                  <div className="relative">
+                    <input type="checkbox" checked={form.isPublic} onChange={e => setForm(f => ({ ...f, isPublic: e.target.checked }))} className="sr-only" />
+                    <div className={`w-10 h-6 rounded-full transition-colors ${form.isPublic ? 'bg-blue-500' : 'bg-[var(--adm-surface-lg)]'}`}>
+                      <div className={`w-4 h-4 bg-white rounded-full shadow-md absolute top-1 transition-transform ${form.isPublic ? 'translate-x-5' : 'translate-x-1'}`} />
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-[var(--adm-text)] text-sm font-medium">Code public</p>
+                    <p className="text-[var(--adm-text-30)] text-xs">Visible par le chatbot et communiqué aux clients. Les codes privés ne sont jamais mentionnés.</p>
                   </div>
                 </label>
 
