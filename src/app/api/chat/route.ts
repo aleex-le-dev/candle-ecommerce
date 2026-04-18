@@ -1,13 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import mongoose from 'mongoose';
-
-function slugify(str: string) {
-  return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-}
-function productUrl(category: string, name: string) {
-  return `/${slugify(category)}/${slugify(name)}`;
-}
+import { productUrl } from '@/lib/slug';
 
 export const dynamic = 'force-dynamic';
 
@@ -109,8 +103,6 @@ ${ctx.promoList || 'Aucun code promo actif en ce moment'}
   });
 
   if (!res.ok) {
-    const err = await res.text();
-    console.error('Groq error:', err);
     return NextResponse.json({ error: 'Erreur IA' }, { status: 502 });
   }
 

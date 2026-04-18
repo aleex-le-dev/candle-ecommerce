@@ -1,36 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Lumière — Boutique de bougies artisanales
 
-## Getting Started
+Lumière est une boutique e-commerce complète dédiée aux bougies artisanales naturelles. Le projet couvre l'intégralité du parcours client — de la découverte des produits jusqu'au paiement — ainsi qu'une interface d'administration pour gérer le catalogue, les commandes et les promotions.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Ce que fait le projet
+
+### Côté client
+- **Catalogue produits** avec filtres par catégorie, survol pour voir la 2e image, fiches produit détaillées
+- **Panier** persistant (cookie), ajout/suppression/modification des quantités
+- **Liste de souhaits** persistante
+- **Paiement sécurisé** via Stripe Checkout (CB, Apple Pay, Google Pay) avec gestion des frais de livraison et codes promo
+- **Espace compte** : informations personnelles, historique des commandes, téléchargement de facture PDF, préférences cookies
+- **Authentification sans mot de passe** : magic link par email ou OAuth Google
+- **Chatbot IA** intégré propulsé par Groq (Llama 3) avec contexte dynamique de la boutique (produits, prix, promos)
+- **Bandeau RGPD** avec gestion des consentements cookies
+
+### Côté admin (`/admin`)
+- **Produits** : création, modification, suppression, gestion du stock
+- **Catégories** : création, renommage, suppression
+- **Codes promo** : pourcentage, montant fixe, livraison gratuite — avec date d'expiration et commande minimum
+- **Commandes** : liste complète, changement de statut (en attente → confirmée → expédiée → livrée), remboursement direct via Stripe, renvoi de facture par email
+- **Notre Histoire** et **Nos Valeurs** : gestion du contenu éditorial
+
+---
+
+## Stack technique
+
+| Couche | Technologie |
+|--------|-------------|
+| Framework | Next.js 16.2 — App Router, Turbopack |
+| Base de données | MongoDB Atlas via Mongoose |
+| Authentification | Sessions HMAC-SHA256 custom (cookie HttpOnly) |
+| Paiement | Stripe Checkout (hosted) |
+| Email | Nodemailer + Gmail SMTP |
+| IA chatbot | Groq API — `llama-3.1-8b-instant` |
+| Styles | Tailwind CSS v4 |
+| Icônes | Lucide React |
+
+---
+
+## Structure des routes
+
+```
+/                          Accueil
+/boutique                  Catalogue (filtre par catégorie)
+/[categorie]/[slug]        Fiche produit
+/panier                    Panier
+/paiement                  Checkout
+/paiement/succes           Confirmation de commande
+/wishlist                  Liste de souhaits
+/notre-histoire            Articles de marque
+/compte                    Espace client
+/compte/connexion          Connexion (magic link / Google)
+/facture/[id]              Facture imprimable / téléchargeable PDF
+/cgu                       Conditions Générales d'Utilisation
+/cgv                       Conditions Générales de Vente
+/contact                   Contact
+/admin                     Dashboard produits
+/admin/categories          Gestion des catégories
+/admin/promos              Codes promo
+/admin/commandes           Gestion des commandes + remboursements
+/admin/histoire            Articles "Notre Histoire"
+/admin/valeurs             Valeurs de marque
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Fonctionnalités notables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Facture PDF** générée côté client via `window.print()` avec CSS print dédié — envoyée automatiquement par email à chaque commande confirmée, re-envoyable depuis l'admin
+- **Remboursement Stripe** en un clic depuis l'admin, avec modal de confirmation — crédite automatiquement le moyen de paiement d'origine
+- **Codes promo** de type "livraison gratuite" qui supprime la ligne livraison dans Stripe
+- **Chatbot** avec contexte boutique injecté dynamiquement (catalogue, prix, best-sellers, promos actives)
+- **Image au survol** dans la grille boutique : la 2e image du produit apparaît en fondu
+- **Dropdown boutique** dans la navbar avec les catégories en temps réel
+- **Commandes idempotentes** : la page de succès Stripe ne crée la commande qu'une seule fois même en cas de rechargement
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Variables d'environnement requises
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+MONGODB_URI
+GOOGLE_CLIENT_ID
+GOOGLE_CLIENT_SECRET
+GOOGLE_REDIRECT_URI
+SMTP_HOST
+SMTP_PORT
+SMTP_USER
+SMTP_PASS
+NEXT_PUBLIC_BASE_URL
+STRIPE_SECRET_KEY
+GROQ_API_KEY
+```
