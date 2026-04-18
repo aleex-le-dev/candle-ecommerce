@@ -16,6 +16,7 @@ const EMPTY_FORM = { icon: '', title: '', desc: '', order: '' };
 
 export default function AdminValeurs() {
   const [valeurs, setValeurs] = useState<Valeur[]>([]);
+  const [counts, setCounts] = useState<{ products: number; promos: number; histoire: number; valeurs: number } | null>(null);
   const [loading, setLoading] = useState(true);
   const [panel, setPanel] = useState<'list' | 'create' | 'edit'>('list');
   const [form, setForm] = useState<typeof EMPTY_FORM>({ ...EMPTY_FORM });
@@ -44,6 +45,7 @@ export default function AdminValeurs() {
   const searchParams = useSearchParams();
   useEffect(() => {
     fetchValeurs().then(() => { if (searchParams.get('new') === '1') openCreate(); });
+    fetch('/api/admin/counts').then(r => r.json()).then(d => { if (!d.error) setCounts(d); });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const openCreate = () => {
@@ -146,6 +148,7 @@ export default function AdminValeurs() {
               <Link href="/admin" className="flex-1 flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm text-[var(--adm-text-40)] hover:text-[var(--adm-text)] hover:bg-[var(--adm-surface)] transition-all">
                 <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
                 Produits
+                {counts != null && <span className="ml-auto text-xs bg-[var(--adm-surface-lg)] px-2 py-0.5 rounded-full">{counts.products}</span>}
               </Link>
               <Link href="/admin?new=1" title="Nouveau produit" className="p-2 rounded-xl text-[var(--adm-text-40)] hover:text-[var(--adm-text)] hover:bg-[var(--adm-surface)] transition-all text-lg leading-none">+</Link>
             </div>
@@ -155,6 +158,7 @@ export default function AdminValeurs() {
               <Link href="/admin/promos" className="flex-1 flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm text-[var(--adm-text-40)] hover:text-[var(--adm-text)] hover:bg-[var(--adm-surface)] transition-all">
                 <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" /></svg>
                 Codes promo
+                {counts != null && <span className="ml-auto text-xs bg-[var(--adm-surface-lg)] px-2 py-0.5 rounded-full">{counts.promos}</span>}
               </Link>
               <Link href="/admin/promos?new=1" title="Nouveau code" className="p-2 rounded-xl text-[var(--adm-text-40)] hover:text-[var(--adm-text)] hover:bg-[var(--adm-surface)] transition-all text-lg leading-none">+</Link>
             </div>
@@ -164,6 +168,7 @@ export default function AdminValeurs() {
               <Link href="/admin/histoire" className="flex-1 flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm text-[var(--adm-text-40)] hover:text-[var(--adm-text)] hover:bg-[var(--adm-surface)] transition-all">
                 <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
                 Notre Histoire
+                {counts != null && <span className="ml-auto text-xs bg-[var(--adm-surface-lg)] px-2 py-0.5 rounded-full">{counts.histoire}</span>}
               </Link>
               <Link href="/admin/histoire?new=1" title="Nouvel article" className="p-2 rounded-xl text-[var(--adm-text-40)] hover:text-[var(--adm-text)] hover:bg-[var(--adm-surface)] transition-all text-lg leading-none">+</Link>
             </div>
@@ -204,7 +209,7 @@ export default function AdminValeurs() {
                       <p className="text-[var(--adm-text)] text-sm font-medium uppercase tracking-wide mb-2">{v.title}</p>
                       <p className="text-[var(--adm-text-30)] text-xs leading-relaxed">{v.desc}</p>
                       <span className="absolute top-4 right-4 text-xs text-[var(--adm-text-40)] bg-[var(--adm-surface)] px-2 py-0.5 rounded-full">#{v.order + 1}</span>
-                      <div className="flex gap-2 mt-5 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="flex gap-2 mt-5">
                         <button
                           onClick={() => openEdit(v)}
                           className="flex-1 py-2 rounded-lg text-xs border border-[var(--adm-border-input)] text-[var(--adm-text-40)] hover:text-[var(--adm-text)] hover:bg-[var(--adm-surface)] transition-all"

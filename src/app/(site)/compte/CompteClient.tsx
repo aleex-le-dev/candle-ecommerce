@@ -105,7 +105,7 @@ export default function CompteClient({ user, orders }: { user: UserInfo; orders:
 
   return (
     <div className="pt-20 min-h-screen bg-neutral-50 flex justify-center">
-      <div className="w-full max-w-5xl flex">
+      <div className="w-full max-w-5xl flex min-h-[calc(100vh-5rem)]">
 
       {/* ── Sidebar ── */}
       <aside className="w-64 shrink-0 border-r border-neutral-200 bg-white flex flex-col">
@@ -119,7 +119,7 @@ export default function CompteClient({ user, orders }: { user: UserInfo; orders:
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 px-3 py-4">
+        <nav className="px-3 py-4">
           <p className="text-[10px] uppercase tracking-widest text-neutral-400 px-3 mb-3">Mon compte</p>
           {NAV.map(item => (
             <button
@@ -140,18 +140,18 @@ export default function CompteClient({ user, orders }: { user: UserInfo; orders:
               )}
             </button>
           ))}
+          <div className="border-t border-neutral-100 mt-3 pt-3">
+            <button
+              onClick={handleLogout}
+              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-sm text-sm text-red-500 hover:bg-red-50 transition-colors"
+            >
+              <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+              Se déconnecter
+            </button>
+          </div>
         </nav>
-
-        {/* Déconnexion */}
-        <div className="px-3 py-4 border-t border-neutral-100">
-          <button
-            onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-sm text-sm text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 transition-colors"
-          >
-            <span>🚪</span>
-            Se déconnecter
-          </button>
-        </div>
       </aside>
 
       {/* ── Contenu ── */}

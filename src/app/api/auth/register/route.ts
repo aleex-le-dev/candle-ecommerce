@@ -1,21 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
-import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 import dbConnect from '@/lib/mongodb';
 import UserModel from '@/lib/models/User';
-import { createSession, SESSION_COOKIE } from '@/lib/auth';
+import { sendVerificationEmail } from '@/lib/mailer';
 
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
   try {
-    const { name, email, password } = await req.json();
-
-    if (!name || !email || !password) {
-      return NextResponse.json({ error: 'Tous les champs sont requis' }, { status: 400 });
-    }
-    if (password.length < 6) {
-      return NextResponse.json({ error: 'Le mot de passe doit faire au moins 6 caractères' }, { status: 400 });
-    }
+    const { name, email } = await req.json();
+    if (!name || !email) return NextResponse.json({ error: 'Nom et email requis' }, { status: 400 });
 
     await dbConnect();
 
@@ -24,19 +18,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Un compte existe déjà avec cet email' }, { status: 409 });
     }
 
-    const hashed = await bcrypt.hash(password, 10);
-    const user = await UserModel.create({ name, email, password: hashed });
+    const verifyToken = crypto.randomBytes(32).toString('hex');
+    await UserModel.create({ name, email, emailVerified: false, verifyToken });
 
-    const token = createSession({ userId: user._id.toString(), name: user.name, email: user.email });
+    try { await sendVerificationEmail(email, name.split(' ')[0], verifyToken); } catch (e) { console.error('Mail error:', e); }
 
-    const res = NextResponse.json({ ok: true, name: user.name, email: user.email });
-    res.cookies.set(SESSION_COOKIE, token, {
-      httpOnly: true,
-      sameSite: 'lax',
-      path: '/',
-      maxAge: 60 * 60 * 24 * 30, // 30 jours
-    });
-    return res;
+    return NextResponse.json({ ok: true, pending: true });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }

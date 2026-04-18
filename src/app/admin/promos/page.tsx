@@ -26,6 +26,7 @@ const EMPTY_FORM = {
 
 export default function AdminPromos() {
   const [promos, setPromos] = useState<PromoCode[]>([]);
+  const [counts, setCounts] = useState<{ products: number; promos: number; histoire: number; valeurs: number } | null>(null);
   const [loading, setLoading] = useState(true);
   const [panel, setPanel] = useState<'list' | 'create' | 'edit'>('list');
   const [form, setForm] = useState<typeof EMPTY_FORM>({ ...EMPTY_FORM });
@@ -54,6 +55,7 @@ export default function AdminPromos() {
   const searchParams = useSearchParams();
   useEffect(() => {
     fetchPromos().then(() => { if (searchParams.get('new') === '1') openCreate(); });
+    fetch('/api/admin/counts').then(r => r.json()).then(d => { if (!d.error) setCounts(d); });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const openCreate = () => {
@@ -164,6 +166,7 @@ export default function AdminPromos() {
               <Link href="/admin" className="flex-1 flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm text-[var(--adm-text-40)] hover:text-[var(--adm-text)] hover:bg-[var(--adm-surface)] transition-all">
                 <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
                 Produits
+                {counts != null && <span className="ml-auto text-xs bg-[var(--adm-surface-lg)] px-2 py-0.5 rounded-full">{counts.products}</span>}
               </Link>
               <Link href="/admin?new=1" title="Nouveau produit" className="p-2 rounded-xl text-[var(--adm-text-40)] hover:text-[var(--adm-text)] hover:bg-[var(--adm-surface)] transition-all text-lg leading-none">+</Link>
             </div>
@@ -183,6 +186,7 @@ export default function AdminPromos() {
               <Link href="/admin/histoire" className="flex-1 flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm text-[var(--adm-text-40)] hover:text-[var(--adm-text)] hover:bg-[var(--adm-surface)] transition-all">
                 <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
                 Notre Histoire
+                {counts != null && <span className="ml-auto text-xs bg-[var(--adm-surface-lg)] px-2 py-0.5 rounded-full">{counts.histoire}</span>}
               </Link>
               <Link href="/admin/histoire?new=1" title="Nouvel article" className="p-2 rounded-xl text-[var(--adm-text-40)] hover:text-[var(--adm-text)] hover:bg-[var(--adm-surface)] transition-all text-lg leading-none">+</Link>
             </div>
@@ -190,6 +194,7 @@ export default function AdminPromos() {
               <Link href="/admin/valeurs" className="flex-1 flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm text-[var(--adm-text-40)] hover:text-[var(--adm-text)] hover:bg-[var(--adm-surface)] transition-all">
                 <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
                 Nos Valeurs
+                {counts != null && <span className="ml-auto text-xs bg-[var(--adm-surface-lg)] px-2 py-0.5 rounded-full">{counts.valeurs}</span>}
               </Link>
               <Link href="/admin/valeurs?new=1" title="Nouvelle valeur" className="p-2 rounded-xl text-[var(--adm-text-40)] hover:text-[var(--adm-text)] hover:bg-[var(--adm-surface)] transition-all text-lg leading-none">+</Link>
             </div>
@@ -257,7 +262,7 @@ export default function AdminPromos() {
                             )}
                           </td>
                           <td className="px-4 py-4">
-                            <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div className="flex items-center justify-end gap-2">
                               <button onClick={() => openEdit(p)} className="p-2 rounded-lg hover:bg-[var(--adm-surface-lg)] text-[var(--adm-text-40)] hover:text-[var(--adm-text)] transition-all">
                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />

@@ -4,6 +4,50 @@ button, a, [role="button"], summary, select, label[for] {
   cursor: pointer;
 }
 
+/* ── Global interaction animations ── */
+button, a, [role="button"] {
+  transition: transform 0.15s ease, opacity 0.15s ease, box-shadow 0.15s ease;
+}
+
+button:hover, a:hover, [role="button"]:hover {
+  transform: translateY(-1px);
+}
+
+button:active, a:active, [role="button"]:active {
+  transform: scale(0.96);
+  transition-duration: 0.08s;
+}
+
+/* Inputs & selects */
+input, textarea, select {
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Don't animate nav/layout links that wrap large areas */
+nav a:hover,
+aside a:hover,
+aside button:hover {
+  transform: none;
+}
+
+/* Icon action buttons (p-2 rounded-lg pattern in admin) get a scale pop */
+button.rounded-lg:hover {
+  transform: scale(1.12);
+}
+button.rounded-lg:active {
+  transform: scale(0.92);
+}
+
+/* CTA / submit buttons — lift + shadow */
+button.rounded-xl:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+button.rounded-xl:active {
+  transform: translateY(0) scale(0.97);
+  box-shadow: none;
+}
+
 :root {
   --background: #fdfdfc;
   --foreground: #171717;

@@ -25,6 +25,7 @@ const EMPTY_FORM = {
 
 export default function AdminHistoire() {
   const [articles, setArticles] = useState<Article[]>([]);
+  const [counts, setCounts] = useState<{ products: number; promos: number; histoire: number; valeurs: number } | null>(null);
   const [loading, setLoading] = useState(true);
   const [panel, setPanel] = useState<'list' | 'create' | 'edit'>('list');
   const [form, setForm] = useState<typeof EMPTY_FORM>({ ...EMPTY_FORM });
@@ -53,6 +54,7 @@ export default function AdminHistoire() {
   const searchParams = useSearchParams();
   useEffect(() => {
     fetchArticles().then(() => { if (searchParams.get('new') === '1') openCreate(); });
+    fetch('/api/admin/counts').then(r => r.json()).then(d => { if (!d.error) setCounts(d); });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const openCreate = () => {
@@ -157,6 +159,7 @@ export default function AdminHistoire() {
               <Link href="/admin" className="flex-1 flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm text-[var(--adm-text-40)] hover:text-[var(--adm-text)] hover:bg-[var(--adm-surface)] transition-all">
                 <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
                 Produits
+                {counts != null && <span className="ml-auto text-xs bg-[var(--adm-surface-lg)] px-2 py-0.5 rounded-full">{counts.products}</span>}
               </Link>
               <Link href="/admin?new=1" title="Nouveau produit" className="p-2 rounded-xl text-[var(--adm-text-40)] hover:text-[var(--adm-text)] hover:bg-[var(--adm-surface)] transition-all text-lg leading-none">+</Link>
             </div>
@@ -166,6 +169,7 @@ export default function AdminHistoire() {
               <Link href="/admin/promos" className="flex-1 flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm text-[var(--adm-text-40)] hover:text-[var(--adm-text)] hover:bg-[var(--adm-surface)] transition-all">
                 <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" /></svg>
                 Codes promo
+                {counts != null && <span className="ml-auto text-xs bg-[var(--adm-surface-lg)] px-2 py-0.5 rounded-full">{counts.promos}</span>}
               </Link>
               <Link href="/admin/promos?new=1" title="Nouveau code" className="p-2 rounded-xl text-[var(--adm-text-40)] hover:text-[var(--adm-text)] hover:bg-[var(--adm-surface)] transition-all text-lg leading-none">+</Link>
             </div>
@@ -183,6 +187,7 @@ export default function AdminHistoire() {
               <Link href="/admin/valeurs" className="flex-1 flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm text-[var(--adm-text-40)] hover:text-[var(--adm-text)] hover:bg-[var(--adm-surface)] transition-all">
                 <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
                 Nos Valeurs
+                {counts != null && <span className="ml-auto text-xs bg-[var(--adm-surface-lg)] px-2 py-0.5 rounded-full">{counts.valeurs}</span>}
               </Link>
               <Link href="/admin/valeurs?new=1" title="Nouvelle valeur" className="p-2 rounded-xl text-[var(--adm-text-40)] hover:text-[var(--adm-text)] hover:bg-[var(--adm-surface)] transition-all text-lg leading-none">+</Link>
             </div>
@@ -233,7 +238,7 @@ export default function AdminHistoire() {
                       </span>
 
                       {/* Actions */}
-                      <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
+                      <div className="flex items-center gap-2 flex-shrink-0">
                         <button
                           onClick={() => openEdit(article)}
                           className="p-2 rounded-lg hover:bg-[var(--adm-surface-lg)] text-[var(--adm-text-40)] hover:text-[var(--adm-text)] transition-all"
