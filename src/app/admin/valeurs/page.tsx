@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import AdminSidebar from '@/components/AdminSidebar';
 import { useSearchParams } from 'next/navigation';
-import Link from 'next/link';
 
 interface Valeur {
   _id: string;
@@ -17,7 +16,6 @@ const EMPTY_FORM = { icon: '', title: '', desc: '', order: '' };
 
 export default function AdminValeurs() {
   const [valeurs, setValeurs] = useState<Valeur[]>([]);
-  const [counts, setCounts] = useState<{ products: number; promos: number; histoire: number; valeurs: number } | null>(null);
   const [loading, setLoading] = useState(true);
   const [panel, setPanel] = useState<'list' | 'create' | 'edit'>('list');
   const [form, setForm] = useState<typeof EMPTY_FORM>({ ...EMPTY_FORM });
@@ -46,7 +44,6 @@ export default function AdminValeurs() {
   const searchParams = useSearchParams();
   useEffect(() => {
     fetchValeurs().then(() => { if (searchParams.get('new') === '1') openCreate(); });
-    fetch('/api/admin/counts').then(r => r.json()).then(d => { if (!d.error) setCounts(d); });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const openCreate = () => {
@@ -99,13 +96,6 @@ export default function AdminValeurs() {
       showToast('Erreur lors de la suppression', 'error');
     }
   };
-
-  const SidebarLink = ({ href, icon, label, active = false }: { href: string; icon: React.ReactNode; label: string; active?: boolean }) => (
-    <Link href={href} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all ${active ? 'bg-[var(--adm-surface-lg)] text-[var(--adm-text)]' : 'text-[var(--adm-text-40)] hover:text-[var(--adm-text)] hover:bg-[var(--adm-surface)]'}`}>
-      {icon}
-      {label}
-    </Link>
-  );
 
   return (
     <div className="min-h-screen bg-[var(--adm-bg)] font-sans">

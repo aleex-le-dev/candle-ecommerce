@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import Link from 'next/link';
 import AdminSidebar from '@/components/AdminSidebar';
 
 interface PromoCode {
@@ -27,7 +26,6 @@ const EMPTY_FORM = {
 
 export default function AdminPromos() {
   const [promos, setPromos] = useState<PromoCode[]>([]);
-  const [counts, setCounts] = useState<{ products: number; promos: number; histoire: number; valeurs: number } | null>(null);
   const [loading, setLoading] = useState(true);
   const [panel, setPanel] = useState<'list' | 'create' | 'edit'>('list');
   const [form, setForm] = useState<typeof EMPTY_FORM>({ ...EMPTY_FORM });
@@ -56,7 +54,6 @@ export default function AdminPromos() {
   const searchParams = useSearchParams();
   useEffect(() => {
     fetchPromos().then(() => { if (searchParams.get('new') === '1') openCreate(); });
-    fetch('/api/admin/counts').then(r => r.json()).then(d => { if (!d.error) setCounts(d); });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const openCreate = () => {

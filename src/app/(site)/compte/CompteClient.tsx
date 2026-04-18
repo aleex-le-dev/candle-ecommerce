@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { getConsent, saveConsent, acceptAll, refuseAll, type CookieConsent } from '@/lib/cookies-consent';
+import { getConsent, saveConsent, type CookieConsent } from '@/lib/cookies-consent';
 const formatOrderNumber = (n: number) => String(n).padStart(7, '0');
 
 const STATUS_LABEL: Record<string, { label: string; color: string }> = {
