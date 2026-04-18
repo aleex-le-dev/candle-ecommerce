@@ -277,6 +277,18 @@ export default function AdminCommandes() {
                             <option key={s} value={s}>{STATUS_CONFIG[s]?.label ?? s}</option>
                           ))}
                         </select>
+                        {order.status !== 'refunded' && order.stripeSessionId && (
+                          <button
+                            onClick={() => setConfirmRefund(order)}
+                            title="Rembourser via Stripe"
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-orange-500/10 border border-orange-500/20 text-orange-400 hover:bg-orange-500/20 transition-colors text-xs whitespace-nowrap"
+                          >
+                            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+                            </svg>
+                            Rembourser
+                          </button>
+                        )}
                         {updating === order._id && (
                           <div className="w-4 h-4 border-2 border-[var(--adm-spinner-ring)] border-t-[var(--adm-spinner-top)] rounded-full animate-spin" />
                         )}
@@ -384,17 +396,6 @@ export default function AdminCommandes() {
                               Renvoyer la facture par mail
                             </button>
                           </div>
-                          {order.status !== 'refunded' && order.stripeSessionId && (
-                            <button
-                              onClick={() => setConfirmRefund(order)}
-                              className="text-xs text-orange-400 hover:text-orange-300 transition-colors flex items-center gap-1.5"
-                            >
-                              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
-                              </svg>
-                              Rembourser via Stripe
-                            </button>
-                          )}
                         </div>
                       </div>
                     )}

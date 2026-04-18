@@ -77,6 +77,7 @@ function serialize(doc: any): Order {
     total: doc.total,
     promoCode: doc.promoCode ?? '',
     status: doc.status ?? 'confirmed',
+    stripeSessionId: doc.stripeSessionId ?? '',
     createdAt: doc.createdAt?.toISOString?.() ?? doc.createdAt ?? '',
   };
 }

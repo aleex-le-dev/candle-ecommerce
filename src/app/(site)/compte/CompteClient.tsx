@@ -12,6 +12,7 @@ const STATUS_LABEL: Record<string, { label: string; color: string }> = {
   shipped: { label: 'Expédiée', color: 'text-blue-600 bg-blue-50 border-blue-200' },
   delivered: { label: 'Livrée', color: 'text-neutral-700 bg-neutral-100 border-neutral-200' },
   cancelled: { label: 'Annulée', color: 'text-red-500 bg-red-50 border-red-200' },
+  refunded:  { label: 'Remboursée', color: 'text-orange-600 bg-orange-50 border-orange-200' },
 };
 
 interface Order {
