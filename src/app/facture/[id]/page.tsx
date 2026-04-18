@@ -52,7 +52,7 @@ export default async function FacturePage({ params }: { params: Promise<{ id: st
       </div>
 
       {/* Facture */}
-      <div className="invoice bg-white max-w-2xl mx-auto my-10 px-14 py-12 shadow-sm font-sans text-neutral-900">
+      <div className="invoice bg-white max-w-2xl mx-auto my-6 sm:my-10 px-5 sm:px-14 py-8 sm:py-12 shadow-sm font-sans text-neutral-900">
 
         {/* En-tête */}
         <div className="flex justify-between items-start mb-8">
@@ -81,7 +81,8 @@ export default async function FacturePage({ params }: { params: Promise<{ id: st
         </div>
 
         {/* Tableau articles */}
-        <table className="w-full mb-6 text-sm">
+        <div className="overflow-x-auto mb-6">
+        <table className="w-full text-sm">
           <thead>
             <tr className="bg-neutral-50 text-[10px] font-bold uppercase tracking-widest text-neutral-400">
               <th className="text-left py-3 px-3">Désignation</th>
@@ -101,6 +102,7 @@ export default async function FacturePage({ params }: { params: Promise<{ id: st
             ))}
           </tbody>
         </table>
+        </div>
 
         {/* Totaux */}
         <div className="flex justify-end mb-6">

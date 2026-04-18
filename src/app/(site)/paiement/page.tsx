@@ -197,11 +197,11 @@ export default function Paiement() {
               <h2 className="text-xs uppercase tracking-widest text-neutral-500 mb-5 pb-3 border-b border-neutral-100">
                 Coordonnées
               </h2>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {field('prenom', 'Prénom')}
                 {field('nom', 'Nom')}
-                <div className="col-span-2">{field('email', 'Email', 'email')}</div>
-                <div className="col-span-2">{field('telephone', 'Téléphone', 'tel', false)}</div>
+                <div className="sm:col-span-2">{field('email', 'Email', 'email')}</div>
+                <div className="sm:col-span-2">{field('telephone', 'Téléphone', 'tel', false)}</div>
               </div>
             </section>
 
@@ -212,7 +212,7 @@ export default function Paiement() {
               </h2>
               <div className="space-y-4">
                 {field('adresse', 'Adresse')}
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {field('cp', 'Code postal')}
                   {field('ville', 'Ville')}
                 </div>

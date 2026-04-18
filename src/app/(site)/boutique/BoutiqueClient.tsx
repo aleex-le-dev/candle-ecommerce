@@ -34,7 +34,7 @@ export default function BoutiqueClient({ products, categories }: Props) {
           <button
             key={cat}
             onClick={() => setActiveCategory(cat)}
-            className={`px-4 py-1.5 text-xs uppercase tracking-widest border rounded-full transition-colors ${
+            className={`px-4 py-2 text-xs uppercase tracking-widest border rounded-full transition-colors ${
               activeCategory === cat
                 ? 'border-neutral-900 bg-neutral-900 text-white'
                 : 'border-neutral-200 text-neutral-500 hover:border-neutral-900 hover:text-neutral-900'
@@ -52,7 +52,7 @@ export default function BoutiqueClient({ products, categories }: Props) {
           <p className="text-neutral-500">Aucun produit dans cette catégorie.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-14">
+        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 sm:gap-x-6 gap-y-10 sm:gap-y-14">
           {filtered.map((product) => (
             <Link href={productUrl(product.category, product.name)} key={product._id} className="group block">
               <div className="aspect-[4/5] bg-neutral-100 mb-4 overflow-hidden relative rounded-sm">

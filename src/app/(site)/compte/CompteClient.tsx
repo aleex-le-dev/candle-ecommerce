@@ -116,10 +116,10 @@ export default function CompteClient({ user, orders }: { user: UserInfo; orders:
 
   return (
     <div className="pt-20 min-h-screen bg-neutral-50 flex justify-center">
-      <div className="w-full max-w-5xl flex min-h-[calc(100vh-5rem)]">
+      <div className="w-full max-w-5xl flex flex-col md:flex-row min-h-[calc(100vh-5rem)]">
 
         {/* ── Sidebar ── */}
-        <aside className="w-64 shrink-0 border-r border-neutral-200 bg-white flex flex-col">
+        <aside className="w-full md:w-64 shrink-0 border-b md:border-b-0 md:border-r border-neutral-200 bg-white flex flex-col">
           {/* Profil */}
           <div className="px-6 py-8 border-b border-neutral-100">
             <div className="w-12 h-12 rounded-full bg-neutral-900 flex items-center justify-center text-white font-medium text-lg mb-3">
@@ -165,7 +165,7 @@ export default function CompteClient({ user, orders }: { user: UserInfo; orders:
         </aside>
 
         {/* ── Contenu ── */}
-        <main className="flex-1 px-8 py-10 overflow-y-auto">
+        <main className="flex-1 px-4 sm:px-8 py-8 sm:py-10 overflow-y-auto">
 
           {/* ── Mes commandes ── */}
           {tab === 'commandes' && (
@@ -281,7 +281,7 @@ export default function CompteClient({ user, orders }: { user: UserInfo; orders:
 
               <div className="bg-white border border-neutral-100 p-8 max-w-xl">
                 <form onSubmit={handleSave} className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {field('prenom', 'Prénom')}
                     {field('nom', 'Nom')}
                   </div>
@@ -289,7 +289,7 @@ export default function CompteClient({ user, orders }: { user: UserInfo; orders:
                   <div className="border-t border-neutral-100 pt-4">
                     {field('telephone', 'Téléphone', 'tel')}
                     {field('adresse', 'Adresse')}
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       {field('cp', 'Code postal')}
                       {field('ville', 'Ville')}
                     </div>
