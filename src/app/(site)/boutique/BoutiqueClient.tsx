@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { productUrl } from '@/lib/slug';
 import WishlistButton from '@/components/WishlistButton';
@@ -12,7 +13,13 @@ interface Props {
 }
 
 export default function BoutiqueClient({ products, categories }: Props) {
+  const searchParams = useSearchParams();
   const [activeCategory, setActiveCategory] = useState('Tous');
+
+  useEffect(() => {
+    const cat = searchParams.get('cat');
+    if (cat && categories.includes(cat)) setActiveCategory(cat);
+  }, [searchParams, categories]);
 
   const filtered =
     activeCategory === 'Tous'

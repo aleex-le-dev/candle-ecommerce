@@ -1,5 +1,7 @@
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import CookieBanner from '@/components/CookieBanner';
+import ChatWidget from '@/components/ChatWidget';
 import { CartProvider } from '@/lib/cart-context';
 import { WishlistProvider } from '@/lib/wishlist-context';
 import { AuthProvider } from '@/lib/auth-context';
@@ -33,6 +35,8 @@ export default async function SiteLayout({
               {children}
             </main>
             <Footer />
+            <CookieBanner />
+            <ChatWidget />
           </div>
         </WishlistProvider>
       </CartProvider>

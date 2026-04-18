@@ -3,8 +3,13 @@ import { Menu } from 'lucide-react';
 import CartIcon from './CartIcon';
 import WishlistIcon from './WishlistIcon';
 import AccountIcon from './AccountIcon';
+import BoutiqueDropdown from './BoutiqueDropdown';
+import { getAllProducts } from '@/lib/products-store';
 
-export default function Navbar() {
+export default async function Navbar() {
+  const products = await getAllProducts();
+  const categories = [...new Set(products.map(p => p.category))];
+
   return (
     <nav className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-100 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -16,7 +21,7 @@ export default function Navbar() {
           </div>
           <div className="hidden md:flex space-x-8 items-center">
             <Link href="/" className="text-neutral-600 hover:text-neutral-900 transition-colors uppercase text-sm tracking-widest">Accueil</Link>
-            <Link href="/boutique" className="text-neutral-600 hover:text-neutral-900 transition-colors uppercase text-sm tracking-widest">Boutique</Link>
+            <BoutiqueDropdown categories={categories} />
             <Link href="/notre-histoire" className="text-neutral-600 hover:text-neutral-900 transition-colors uppercase text-sm tracking-widest">Notre Histoire</Link>
           </div>
           <div className="flex items-center space-x-4">

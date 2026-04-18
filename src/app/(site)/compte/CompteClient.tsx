@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { getConsent, saveConsent, acceptAll, refuseAll, type CookieConsent } from '@/lib/cookies-consent';
 const formatOrderNumber = (n: number) => String(n).padStart(7, '0');
 
 const STATUS_LABEL: Record<string, { label: string; color: string }> = {
@@ -33,11 +34,12 @@ interface UserInfo {
   pays: string;
 }
 
-type Tab = 'commandes' | 'infos';
+type Tab = 'commandes' | 'infos' | 'cookies';
 
 const NAV: { id: Tab; label: string; icon: string }[] = [
   { id: 'infos',     label: 'Mes infos',     icon: '👤' },
   { id: 'commandes', label: 'Mes commandes', icon: '📦' },
+  { id: 'cookies',   label: 'Cookies',       icon: '🍪' },
 ];
 
 export default function CompteClient({ user, orders }: { user: UserInfo; orders: Order[] }) {
@@ -61,6 +63,14 @@ export default function CompteClient({ user, orders }: { user: UserInfo; orders:
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState('');
+  const [cookiePrefs, setCookiePrefs] = useState<CookieConsent>(() => getConsent() ?? { essential: true, analytics: false, marketing: false });
+  const [cookieSaved, setCookieSaved] = useState(false);
+
+  const handleSaveCookies = () => {
+    saveConsent(cookiePrefs);
+    setCookieSaved(true);
+    setTimeout(() => setCookieSaved(false), 3000);
+  };
 
   const handleLogout = async () => {
     await fetch('/api/auth/logout', { method: 'POST' });
@@ -269,6 +279,53 @@ export default function CompteClient({ user, orders }: { user: UserInfo; orders:
                   {saved && <p className="text-emerald-600 text-sm">✓ Sauvegardé</p>}
                 </div>
               </form>
+            </div>
+          </>
+        )}
+        {/* ── Cookies ── */}
+        {tab === 'cookies' && (
+          <>
+            <h1 className="text-2xl font-serif text-neutral-900 mb-8">Préférences cookies</h1>
+            <div className="bg-white border border-neutral-100 p-8 max-w-xl">
+              <p className="text-sm text-neutral-500 leading-relaxed mb-6">
+                Gérez vos préférences de cookies. Les cookies essentiels sont nécessaires au fonctionnement du site et ne peuvent pas être désactivés.
+              </p>
+              <div className="space-y-0 mb-8">
+                {([
+                  { key: 'essential' as keyof CookieConsent, label: 'Essentiels', desc: 'Authentification, panier, session. Nécessaires au fonctionnement du site.', locked: true },
+                  { key: 'analytics' as keyof CookieConsent, label: 'Analytiques', desc: 'Mesure d\'audience et statistiques de navigation anonymisées.', locked: false },
+                  { key: 'marketing' as keyof CookieConsent, label: 'Marketing', desc: 'Personnalisation des publicités et suivi des conversions.', locked: false },
+                ]).map(({ key, label, desc, locked }) => (
+                  <div key={key} className="flex items-center gap-6 py-5 border-b border-neutral-100 last:border-0">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-neutral-900 mb-1">{label}</p>
+                      <p className="text-xs text-neutral-400 leading-relaxed">{desc}</p>
+                    </div>
+                    {locked ? (
+                      <span className="text-[10px] uppercase tracking-widest text-neutral-400 border border-neutral-200 px-2 py-1 whitespace-nowrap">
+                        Toujours actif
+                      </span>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => setCookiePrefs(p => ({ ...p, [key]: !p[key] }))}
+                        className={`relative shrink-0 w-10 h-5 rounded-full transition-colors ${cookiePrefs[key] ? 'bg-neutral-900' : 'bg-neutral-200'}`}
+                      >
+                        <span className={`absolute left-0.5 top-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform ${cookiePrefs[key] ? 'translate-x-5' : 'translate-x-0'}`} />
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+              <div className="flex items-center gap-4">
+                <button
+                  onClick={handleSaveCookies}
+                  className="bg-neutral-900 text-white px-8 py-3 text-xs uppercase tracking-widest hover:bg-neutral-800 transition-colors"
+                >
+                  Enregistrer
+                </button>
+                {cookieSaved && <p className="text-emerald-600 text-sm">✓ Sauvegardé</p>}
+              </div>
             </div>
           </>
         )}
